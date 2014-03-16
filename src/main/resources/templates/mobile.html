@@ -12,14 +12,14 @@
 </head>
 <body class="mobile">
 <div>
-    <div class="grid flex">
+    <div id="feedback" class="grid flex">
         <div class="col_12">
             <div class="pull-right" id="logo"></div>
-            <h2>2/12</h2>
+            <h2 id="pageId" th:text="''">2/12</h2>
         </div>
         <div class="content center">
             <div class="col_12">
-                    <h1>Something Awesome about us!</h1>
+                <h1 id="pageTitle" th:text="''">Something Awesome about us!</h1>
                 <div class="heart"></div>
                 <div class="question"></div>
                 <div class="notes"></div>
@@ -27,11 +27,11 @@
             </div>
         </div>
     </div>
-    <div th:include="register :: content" class="grid flex hidden"></div>
+    <div th:include="register :: content" id ="register" class="grid flex hidden"></div>
 </div>
 <div class="overlay overlay-hugeinc">
+    <p></p>
     <button type="button" class="overlay-close">Close</button>
-    <p>test</p>
 </div>
 </body>
 </html>

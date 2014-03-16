@@ -1,4 +1,7 @@
-<html>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}" media="all" /> <!-- KICKSTART -->
     <title></title>
@@ -9,12 +12,9 @@
         <div class="grid flex">
             <div class="col_12 navbar">
                 <div class="pull-left" id="logo"></div>
-                <!-- Menu Horiz ontal -->
-                <form id="signin-form" class="pull-right">
-                    <input type="text" name="email" placeholder="Email">
-                    <input type="text" name="password" placeholder="Password">
-                    <button type="button" class="small">Sign in</button>
-                </form>
+                <div sec:authorize="isAuthenticated()">
+	        		Hi <span th:text="${#authentication.name}"></span>
+	    		</div>
             </div>
             <div class="content"  id="slides-list">
                 <div class="page-header">

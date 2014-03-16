@@ -11,10 +11,11 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/user").authenticated()
-				.anyRequest().permitAll();
-		http.formLogin().loginPage("/login").permitAll().and().logout()
-				.permitAll();
+		http.authorizeRequests().antMatchers("/user", "/slides-list")
+				.authenticated().anyRequest().permitAll();
+		http.formLogin().loginPage("/login").defaultSuccessUrl("/slides-list")
+				.permitAll().and().logout().logoutUrl("/logout")
+				.logoutSuccessUrl("/").permitAll();
 	}
 
 	@Override

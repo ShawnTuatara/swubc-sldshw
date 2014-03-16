@@ -1,13 +1,13 @@
 <head>
     <title>SLDSHW</title>
-    <link href="../static/css/reveal.css" rel="stylesheet"></link>
-    <link href="../static/css/default.css" rel="stylesheet" id="theme"></link>
-    <link href="../static/css/actions.css" rel="stylesheet" id="theme"></link>
-    <script src="../static/js/jquery-2.1.0.min.js" ></script>
-    <script src="../static/js/stomp.js" ></script>
-    <script src="../static/js/sockjs-0.3.4.min.js" ></script>
-    <link href="../static/css/graph.css" rel="stylesheet"></link>
-    <script src="../static/js/reveal.js" ></script>
+    <link href="../static/css/reveal.css" th:href="@{/css/reveal.css}" rel="stylesheet"></link>
+    <link href="../static/css/default.css" th:href="@{/css/default.css}" rel="stylesheet" id="theme"></link>
+    <link href="../static/css/actions.css" th:href="@{/css/actions.css}" rel="stylesheet" id="theme"></link>
+    <script src="../static/js/jquery-2.1.0.min.js" th:src="@{/js/jquery-2.1.0.min.js}" ></script>
+    <script src="../static/js/stomp.js" th:src="@{/js/stomp.js}" ></script>
+    <script src="../static/js/sockjs-0.3.4.min.js" th:src="@{/js/sockjs-0.3.4.min.js}" ></script>
+    <link href="../static/css/graph.css" th:href="@{/css/graph.css}" rel="stylesheet"></link>
+    <script src="../static/js/reveal.js" th:src="@{/js/reveal.js}" ></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     
     
@@ -63,14 +63,14 @@
             </section>
             
             <section>
-                <!-- content to be placed inside <body>…</body> -->
+                <!-- content to be placed inside <body></body> -->
                 <h1> Live Feedback</h1>
                 <div id="poll">
                         
                 </div>
             </section>
             <section>
-                <!-- content to be placed inside <body>…</body> -->
+                <!-- content to be placed inside <body></body> -->
                 <h1> Thank You</h1>
                 <div id="">
                     <div class="heart"></div>

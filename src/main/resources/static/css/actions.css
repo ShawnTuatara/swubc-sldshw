@@ -1,0 +1,22 @@
+.heart{
+    cursor: pointer;
+    /*display: inline-block;*/
+    margin-top: 15px;
+    margin-left: 4px;
+    width: 70px;
+    height: 70px;
+    background: url("../img/heart-white.svg") no-repeat;
+}
+.heart:hover, .heart.active{
+    background: url("../img/heart-green.svg") no-repeat;
+}
+.question{
+    cursor: pointer;
+    /*display: inline-block;*/
+    width: 70px;
+    height: 70px;
+    background: url("../img/question-white.svg") no-repeat;
+}
+.question:hover, .question.active{
+    background: url("../img/question-green.svg") no-repeat;
+}

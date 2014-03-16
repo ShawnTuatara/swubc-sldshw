@@ -565,14 +565,14 @@ button.medium{
 .question:hover, .question.active{
     background: url("../img/question-green.svg") no-repeat;
 }
-.notes, .notes.active{
+.notes{
     cursor: pointer;
     /*display: inline-block;*/
     width: 70px;
     height: 70px;
     background: url("../img/notes-white.svg") no-repeat;
 }
-.notes:hover{
+.notes:hover, .notes.active{
     background: url("../img/notes-green.svg") no-repeat;
 }
 .question, .heart, .notes{
@@ -588,9 +588,12 @@ button.medium{
     position: absolute;
     background-color: #4f4d65;
 }
-
-.footer-mobile{
-    margin-top: 50px;
+.footer-mobile div{
+    display: inline-block;
+}
+.footer-mobile #logo{
+    position: absolute;
+    right: 0;
 }
 
 /*Speech bubble*/

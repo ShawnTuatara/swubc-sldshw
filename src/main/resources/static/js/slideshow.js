@@ -1,3 +1,5 @@
+var lastPage = 4
+
 function Client(pres_id){ 
     
     var pres_id = pres_id;
@@ -30,12 +32,12 @@ function Client(pres_id){
         
         pageId = data.pageId;
         pageTitle = data.title;
+        console.log(data)
         
         $("#pageTitle").text(pageTitle);
-        $("#pageId").text(pageId)
         
-        console.log(pageId)
-        if (pageId==2){
+        console.log(lastPage);
+        if (pageId==lastPage){
             $("#feedback").addClass('hidden');
             $("#register").removeClass('hidden')
         }

@@ -14,7 +14,6 @@ function Client(pres_id){
     /* var ep_page = "".concat(ep, "/page/", pageId) */
     var ep_summary = "".concat(ep, "/summary")
     var topic_ep_page = "".concat('/topic', ep_page)
-    var topic_ep_summary = "".concat('/topic', ep_summary)
 
     var recieve_page_annotations = function(data){
         
@@ -78,7 +77,6 @@ function Client(pres_id){
         stompClient.subscribe(ep_page, recieve_id_page );
         stompClient.subscribe(ep_summary, recieve_id_summary);
         stompClient.subscribe(topic_ep_page, recieve_topic_id_page );
-        stompClient.subscribe(topic_ep_summary, recieve_topic_id_summary);
         
     }
     

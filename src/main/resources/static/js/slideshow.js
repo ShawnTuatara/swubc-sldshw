@@ -28,11 +28,12 @@ function Client(pres_id){
         
         data = JSON.parse(data.body);
         
-        pageID = data.pageID;
+        pageId = data.pageId;
         pageTitle = data.title;
         
         $("h1").text(pageTitle);
-        $(".slide-number > h2").text(pageID)
+        console.log(pageId)
+        $(".slide-number > h2").text(pageId)
         
         var topic_ep_page_id = "".concat(topic_ep_page, pageID)
         

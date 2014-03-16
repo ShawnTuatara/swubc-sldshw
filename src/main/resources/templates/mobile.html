@@ -27,10 +27,8 @@
                 <div id="noteInput" style="display:none; position: relative; top: 0; bottom: 0;"><textarea id="note"></textarea><button class="blue medium" id="noteSubmit">Submit</button></div>
             </div>
         </div>
-        <div th:replace="register :: content"></div>
-        <div class="col_12">
-        </div>
     </div>
+    <div th:include="register :: content" class="grid flex hidden"></div>
 </div>
 </body>
 </html>

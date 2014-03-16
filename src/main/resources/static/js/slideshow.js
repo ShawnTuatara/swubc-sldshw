@@ -14,17 +14,17 @@ function Client(pres_id){
     var ep_summary = "".concat(ep, "/summary")
     var topic_ep_page = "".concat('/topic', ep_page)
     var topic_ep_summary = "".concat('/topic', ep_summary)
+    
+    var set_page_id = function (data){$("#things").text(data);}
 
     /* initialize host and establish subscriptions */
     var recieve_id = function (data){console.log(data)};
     var recieve_id_page = function(data){$("#PageNum").text(data);}
-    var recieve_topic_id_page = function(data){
-        console.log(data);
-        $("#PageNum").text(data.body);}
+    var recieve_topic_id_page = function(data){$("#PageNum").text(data.body);}
     var recieve_id_summary = function(data){console.log(data)};
     var recieve_topic_id_summary = function (data){console.log(data)};
     
-    var do_subscriptions = function(){
+    var init = function(){
     
         stompClient.subscribe(ep, recieve_id );
         stompClient.subscribe(ep_page, recieve_id_page );
@@ -36,13 +36,7 @@ function Client(pres_id){
     
     var socket = new SockJS('/socket');
     stompClient = Stomp.over(socket);
-    stompClient.connect({}, do_subscriptions);
-    
-    /*
-    $('#MainControl').click(function () {
-        stompClient.send(ep, {}, 1);
-    });
-    */
+    stompClient.connect({}, init);
     
     $('#Heart').click(function () {
         stompClient.send(ep, {}, JSON.stringify({ pageannotation: {heart: true, pageId: get_page_id()} }));
@@ -102,13 +96,13 @@ function Host(pres_id){
 
     /* initialize host and establish subscriptions */
     
-    var do_subscriptions = function(){
+    var init = function(){
         stompClient.subscribe(ep, data_recieved);
         stompClient.subscribe(ep_page, data_recieved);
     }
     
     var socket = new SockJS('/socket');
     stompClient = Stomp.over(socket);
-    stompClient.connect({}, do_subscriptions);
+    stompClient.connect({}, init);
 
 }

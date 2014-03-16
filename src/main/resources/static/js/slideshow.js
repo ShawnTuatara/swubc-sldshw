@@ -1,7 +1,7 @@
 function Client(pres_id){ 
     
     var pres_id = pres_id;
-    var pageID = null;
+    var pageId = null;
     var pageTitle = null;
     
     var header = {"username": null, "password": null};
@@ -9,7 +9,7 @@ function Client(pres_id){
     /* endpoints */
     var ep = "".concat("/presentation/", pres_id)
     var ep_page = "".concat(ep, "/page")
-    /* var ep_page = "".concat(ep, "/page/", pageID) */
+    /* var ep_page = "".concat(ep, "/page/", pageId) */
     var ep_summary = "".concat(ep, "/summary")
     var topic_ep_page = "".concat('/topic', ep_page)
     var topic_ep_summary = "".concat('/topic', ep_summary)
@@ -28,13 +28,19 @@ function Client(pres_id){
         
         data = JSON.parse(data.body);
         
-        pageID = data.pageId;
+        pageId = data.pageId;
         pageTitle = data.title;
         
-        $("h1").text(pageTitle);
-        $(".slide-number > h2").text(pageID)
+        $("#pageTitle").text(pageTitle);
+        $("#pageId").text(pageId)
         
-        var topic_ep_page_id = "".concat(topic_ep_page, pageID)
+        console.log(pageId)
+        if (pageId==2){
+            $("#feedback").addClass('hidden');
+            $("#register").removeClass('hidden')
+        }
+        
+        var topic_ep_page_id = "".concat(topic_ep_page, pageId)
         
         stompClient.subscribe(topic_ep_page_id, recieve_page_annotations);
         
@@ -71,11 +77,11 @@ function Client(pres_id){
             if (me.hasClass("active") == false){
                 me.addClass("active");
                 
-                stompClient.send("".concat(ep_page, "/", pageID), {}, JSON.stringify({heart: true, pageId: pageID}));
+                stompClient.send("".concat(ep_page, "/", pageId), {}, JSON.stringify({heart: true, pageId: pageId}));
                 }
             else if (me.hasClass("active")){
                 me.removeClass("active");
-                stompClient.send("".concat(ep_page, "/", pageID), {}, JSON.stringify({heart: false, pageId: pageID}));
+                stompClient.send("".concat(ep_page, "/", pageId), {}, JSON.stringify({heart: false, pageId: pageId}));
                 }
         });
         
@@ -84,11 +90,11 @@ function Client(pres_id){
             
             if (me.hasClass("active") == false){
                 me.addClass("active");
-                stompClient.send("".concat(ep_page, "/", pageID), {}, JSON.stringify( {question: true, pageId: pageID} ));
+                stompClient.send("".concat(ep_page, "/", pageId), {}, JSON.stringify( {question: true, pageId: pageId} ));
                 }
             else if (me.hasClass("active")){
                 me.removeClass("active");
-                stompClient.send("".concat(ep_page, "/", pageID), {}, JSON.stringify({question: false, pageId: pageID}));
+                stompClient.send("".concat(ep_page, "/", pageId), {}, JSON.stringify({question: false, pageId: pageId}));
                 }
         });
         
@@ -100,12 +106,12 @@ function Client(pres_id){
             
             if (me.hasClass("active")){
                 me.removeClass("active")
-                stompClient.send("".concat(ep_page, "/", pageID), {}, JSON.stringify({vote: null, pageId: pageID}));
+                stompClient.send("".concat(ep_page, "/", pageId), {}, JSON.stringify({vote: null, pageId: pageId}));
                 }
                 
             else {
                 me.addClass("active")
-                stompClient.send("".concat(ep_page, "/", pageID), {}, JSON.stringify({vote: me.data("option"), pageId: pageID}));
+                stompClient.send("".concat(ep_page, "/", pageId), {}, JSON.stringify({vote: me.data("option"), pageId: pageId}));
                 
                 }
             });
@@ -125,7 +131,7 @@ function Client(pres_id){
             
         $("#noteSubmit").click(function(){
             console.log($("#note").val());
-            stompClient.send(ep, {}, JSON.stringify({ pageannotation: {comment: $("#note").val(), "pageId": pageID} }));
+            stompClient.send(ep, {}, JSON.stringify({ pageannotation: {comment: $("#note").val(), "pageId": pageId} }));
             toggleInput();
         });
             
@@ -162,7 +168,7 @@ function Host(pres_id){
         
         var get_pageData = function (){
             
-            page_id = "".concat(Reveal.getIndices().v, ",", Reveal.getIndices().h)
+            page_id = Reveal.getIndices().h.toString(); /*"".concat(Reveal.getIndices().v, ",", Reveal.getIndices().h)*/
             title = $($("section")[Reveal.getIndices().h]).find("h1").text();/*$("section")[Reveal.getIndices().h];*/
             
             return {"title": title, pageId: page_id}

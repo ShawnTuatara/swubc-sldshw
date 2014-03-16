@@ -6,7 +6,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.startupweekend.ubc.sldshw.SldShwUserDetailsService;
 
@@ -14,7 +13,7 @@ import com.startupweekend.ubc.sldshw.SldShwUserDetailsService;
 @EnableWebMvcSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
-	public UserDetailsService sldShwUserDetailsService() {
+	public SldShwUserDetailsService sldShwUserDetailsService() {
 		return new SldShwUserDetailsService();
 	}
 	

@@ -14,6 +14,10 @@ function Client(pres_id){
     var topic_ep_page = "".concat('/topic', ep_page)
     var topic_ep_summary = "".concat('/topic', ep_summary)
 
+    var recieve_page_annotations = function(data){
+        
+    }
+    
     /* initialize host and establish subscriptions */
     var recieve_id = function (data){console.log(data)};
     
@@ -27,8 +31,13 @@ function Client(pres_id){
         pageID = data.pageID;
         pageTitle = data.title;
         
-        $("h3").text(pageTitle);
+        $("h1").text(pageTitle);
         $(".slide-number > h2").text(pageID)
+        
+        var topic_ep_page_id = "".concat(topic_ep_page, pageID)
+        
+        stompClient.subscribe(topic_ep_page_id, recieve_page_annotations);
+        
         }
     
     var recieve_id_summary = function(data){
@@ -92,22 +101,36 @@ function Client(pres_id){
                 me.removeClass("active")
                 stompClient.send(ep, {}, JSON.stringify({ pageannotation: {vote: null, pageId: pageID} }));
                 }
+                
             else {
                 me.addClass("active")
                 stompClient.send(ep, {}, JSON.stringify({ pageannotation: {vote: me.data("option"), pageId: pageID} }));
                 
                 }
             });
-    });
-    
-    $('#notes').click(function () {
-        $("#noteInput").css("display", "none");
-        stompClient.send(ep, {}, JSON.stringify({ pageannotation: {question: true, pageId: pageID} }));
-    });
+        
+        var toggleInput = function(){
+            if ($("#noteInput").css("display")=="block"){
+                    $("#noteInput").css("display", "none");
+                }
+                else {
+                    $("#noteInput").css("display", "block");
+                }
+        }
+        
+        $('.notes').click(toggleInput)
+            
+        $("#noteSubmit").click(function(){
+            console.log($("#note").val());
+            stompClient.send(ep, {}, JSON.stringify({ pageannotation: {comment: $("#note").val(), pageId: pageID} }));
+            toggleInput();
+        });
+            
+        });
     
     var register = function (data) {
         stompClient.send("/register", {}, { body: data});
-    }
+        };
 }
 
 function Host(pres_id){
@@ -137,13 +160,13 @@ function Host(pres_id){
         var get_pageData = function (){
             
             page_id = "".concat(Reveal.getIndices().v, ",", Reveal.getIndices().h)
-            page_title = $("section")[Reveal.getIndices().h];
+            title = $($("section")[Reveal.getIndices().h]).find("h1").text();/*$("section")[Reveal.getIndices().h];*/
             
-            return {"page_title": page_title, "page_id": page_id}
+            return {"title": title, pageId: page_id}
             }
         console.log(get_pageData());
         stompClient.send(ep_page, {}, JSON.stringify(get_pageData()));
-        stompClient.send(ep_relay, {}, JSON.stringify(packIndices()))
+        /*stompClient.send(ep_relay, {}, JSON.stringify(packIndices()))*/
     }
     
     Reveal.addEventListener("slidechanged", slidechanged);
@@ -166,7 +189,7 @@ function Host(pres_id){
     var init = function(){
         stompClient.subscribe(ep, data_recieved);
         stompClient.subscribe(ep_page, data_recieved);
-        stompClient.subscribe(topic_ep_relay, go_to_slide);
+        /*stompClient.subscribe(topic_ep_relay, go_to_slide);*/
 
     }
     

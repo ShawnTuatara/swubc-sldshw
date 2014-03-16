@@ -20,10 +20,12 @@ function Client(pres_id){
         $("#PageNum").text(data);}
     
     var recieve_topic_id_page = function(data){
-        console.log(data);
-        pageID = data;
+        
+        pageID = JSON.parse(data.body);
+        console.log(pageID);
         
         $("h3").text("test title");
+        $(".slide-number > h2").text(pageID)
         }
     
     var recieve_id_summary = function(data){
@@ -51,7 +53,7 @@ function Client(pres_id){
     /* bind client functions */
     
     $(document).ready(function(){
-        $('#heart').click(function () {
+        $('.heart').click(function () {
             me = $(this)
             
             if (me.hasClass("active") == false){
@@ -64,7 +66,7 @@ function Client(pres_id){
                 }
         });
         
-        $('#question').click(function () {
+        $('.question').click(function () {
             me = $(this)
             
             if (me.hasClass("active") == false){
@@ -112,12 +114,12 @@ function Host(pres_id){
     var ep = "".concat("/presentation/", pres_id)
     var ep_page = "".concat(ep, "/page")
     var ep_summary = "".concat(ep, "/summary")
-    var ep_relay = "".concat(ep, "/summary")
+    var ep_relay = "".concat(ep, "/relay")
     var topic_ep_page = "".concat('/topic', ep_page)
+    var topic_ep_relay = "".concat('/topic', ep, "/relay")
     var topic_ep_summary = "".concat('/topic', ep_summary)
 
     /* slideshow control event */
-    
     var slidechanged = function(){
 
         var packIndices = function (){
@@ -145,7 +147,10 @@ function Host(pres_id){
     }
 
     var go_to_slide = function(data){
-        Reveal.slide(data.v, data.h, data.f);
+
+        data = JSON.parse(data.body);
+        /* This locks hosts together */
+        /* Reveal.slide(data.v, data.h, data.f); */
         }
 
     /* initialize host and establish subscriptions */
@@ -153,7 +158,7 @@ function Host(pres_id){
     var init = function(){
         stompClient.subscribe(ep, data_recieved);
         stompClient.subscribe(ep_page, data_recieved);
-        stompClient.subscribe(ep_relay, go_to_slide);
+        stompClient.subscribe(topic_ep_relay, go_to_slide);
 
     }
     

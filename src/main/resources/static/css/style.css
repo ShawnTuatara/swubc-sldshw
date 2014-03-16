@@ -103,6 +103,9 @@ body{
 .loggedIn{
 	display: none;
 }
+.hidden{
+	display: none;
+}
 /* .anonymous{
     display: none;
 } */

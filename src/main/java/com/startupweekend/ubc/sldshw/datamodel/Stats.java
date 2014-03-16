@@ -1,9 +1,19 @@
 package com.startupweekend.ubc.sldshw.datamodel;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+/**
+ * Collects stats on page annotations. Thread-safe.
+ * @author shu
+ *
+ */
 @ToString
 @EqualsAndHashCode
 public class Stats {
@@ -11,8 +21,14 @@ public class Stats {
 	@Getter
 	private final String pageId;
 	
-	private int heartCount;
-	private int questionCount;
+	@Getter
+	private AtomicInteger heartCount = new AtomicInteger(0);
+	@Getter
+	private AtomicInteger questionCount = new AtomicInteger(0);
+	
+	private Object lock = new Object();
+	@Getter
+	private Map<String, AtomicInteger> voteCounts = new HashMap<String, AtomicInteger>();
 	
 	public Stats(String pageId) {
 		this.pageId = pageId;
@@ -24,11 +40,22 @@ public class Stats {
 		}
 		
 		if (annotation.getHeart() != null && annotation.getHeart()) {
-			this.heartCount++;
+			this.heartCount.incrementAndGet();
 		}
 		
 		if (annotation.getQuestion() != null && annotation.getQuestion()) {
-			this.questionCount++;
+			this.questionCount.incrementAndGet();
+		}
+		
+		if (annotation.getVote() != null && !annotation.getVote().isEmpty()) {
+			if (!voteCounts.containsKey(annotation.getVote())) {
+				synchronized(lock) {
+					if (!voteCounts.containsKey(annotation.getVote())) {
+						voteCounts.put(annotation.getVote(), new AtomicInteger(0));
+					}
+				}
+			}
+			voteCounts.get(annotation.getVote()).incrementAndGet();
 		}
 	}
 }

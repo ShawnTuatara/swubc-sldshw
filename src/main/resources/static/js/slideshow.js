@@ -1,13 +1,4 @@
-$(document).ready(function(){  
-
-    var stompClient = null;
-
-    function setConnected(connected) {
-            document.getElementById('connect').disabled = connected;
-            document.getElementById('disconnect').disabled = !connected;
-            document.getElementById('conversationDiv').style.visibility = connected ? 'visible' : 'hidden';
-            document.getElementById('response').innerHTML = '';
-        }
+function Client(){ 
     
     function connect() {
         var socket = new SockJS('/socket');
@@ -38,58 +29,73 @@ $(document).ready(function(){
         }
     $('#sendName').click(sendComment);
     connect();
-    
-});
-
-/*
-$(document).ready(function(){
-    Reveal.initialize({});
 
     
-    function BaseUser() {
-        var stompClient = null;
-    };
+    $('h1').click(function(data){
+        console.log(this.text());
+        /*
+        stompClient.send("/", {}, JSON.stringify({ 'body': page }));
+        */
+    });
 
-    BaseUser.prototype.connect = function () {
-        var socket = new SockJS('/socket');
-        stompClient = Stomp.over(socket);
-        stompClient.connect({}, function(frame) {
-            setConnected(true);
-            console.log('Connected: ' + frame);
-            
-            stompClient.subscribe('/comment', function(greeting){
-                console.log(greeting);
-            });
-        });}
-
-    function Client(BaseUser){
-
-        var base_user = new BaseUser(); 
-        base_user.connect();
-        
-        }
-
-    function Host(BaseUser){
-
-        var base_user = new BaseUser(); 
-        base_user.connect();
-        
-        
-        var comment_subscriptions = client.subscribe("/comment", comment_recieved);
-        var comment_recieved = function(data){console.log(data)}
-
-        var packIndices = function (){
-        page = {'indexv': Reveal.getIndices().v,
-            'indexh': Reveal.getIndices().h,
-            'indexf': Reveal.getIndices().f || 0};
-            console.log(page)
-
-        return page;
+    
+    /*
+    initialize host and establish subscriptions
+    */
+    
+    var recieve_broadcast = function (data){console.log(data)};
+    var recieve_data = function(data){console.log(data)};
+    
+    var do_subscriptions = function(){
+    
+        stompClient.subscribe('/broadcast', recieve_broadcast);
+        stompClient.subscribe('/', recieve_data);
     }
     
-    Reveal.addEventListener("slidechanged", packIndices);
-        
-        
-        }
+    var socket = new SockJS('/socket');
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, do_subscriptions);
+    
+}
 
-*/
+function Host(){
+    /*
+    slideshow control event
+    */
+    
+    var slidechanged = function(){
+
+        var packIndices = function (){
+            page = {'v': Reveal.getIndices().v,
+                    'h': Reveal.getIndices().h,
+                    'f': Reveal.getIndices().f || 0};
+                    
+            return page;
+
+        }
+        stompClient.send("/", {}, JSON.stringify({ 'body': packIndices() }));
+    }
+    
+    Reveal.addEventListener("slidechanged", slidechanged);
+    
+    /*
+    incoming data processing
+    */
+    
+    var data_recieved = function(data) {
+        console.log(data);
+    }
+
+    /*
+    initialize host and establish subscriptions
+    */
+    
+    var do_subscriptions = function(){
+        stompClient.subscribe("/", data_recieved);
+    }
+    
+    var socket = new SockJS('/socket');
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, do_subscriptions);
+
+}

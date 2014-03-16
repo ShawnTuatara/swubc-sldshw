@@ -5,9 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
@@ -144,4 +146,12 @@ public class MessagingController {
 			@Header(SimpMessageHeaderAccessor.SESSION_ID_HEADER) String userId) {
 		userSessionMappingHack.put(email, userId);
 	}
+	
+	@MessageMapping("/presentation/{id}/relay")
+	public Object relay(@DestinationVariable("id") String presentationId,
+			@Payload Map message) {
+		return message;
+	}
+	
+
 }

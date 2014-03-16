@@ -14,6 +14,10 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @Configuration
 public class MvcConfig extends WebMvcConfigurerAdapter {
+	@Autowired
+	private final Collection<ITemplateResolver> templateResolvers = Collections
+			.emptySet();
+
 	@Bean
 	public SpringTemplateEngine springTemplateEngine() {
 		SpringTemplateEngine engine = new SpringTemplateEngine();
@@ -24,10 +28,6 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 		return engine;
 	}
 
-	@Autowired
-	private final Collection<ITemplateResolver> templateResolvers = Collections
-			.emptySet();
-
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/").setViewName("home");
@@ -35,5 +35,4 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 		registry.addViewController("/login").setViewName("login");
 		registry.addViewController("/user").setViewName("user");
 	}
-
 }

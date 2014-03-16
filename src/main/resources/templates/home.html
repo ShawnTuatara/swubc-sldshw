@@ -1,13 +1,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
+    <link rel="shortcut icon" href="../static/favicon.ico" th:href="@{/favicon.ico}" />
+	<link rel="icon" href="../static/favicon.ico" th:href="@{/favicon.ico}" />
     <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}" media="all" /> <!-- KICKSTART -->
     <script src="../static/js/jquery-2.1.0.min.js" th:src="@{/js/jquery-2.1.0.min.js}" ></script>
-    <script type="text/javascript">
-      $(document).ready(function() {
-    	 $('#loginSignIn').click(function() {$(this).parent().submit();});
-      });
-    </script>
+    <script src="../static/js/slideshow.js" th:src="@{/js/slideshow.js}"></script>
     <title>Slideshow</title>
 </head>
 <body id="home">
@@ -24,7 +22,7 @@
             </div>
             <div class="col_6">
                 <h5>Create your first presentation</h5>
-                <button type="button" class="blue medium">Create an account</button>
+                <a href="account.html" th:href="@{/account}"><button type="button" class="blue medium">Create an account</button></a>
             </div>
         </div>
     </div>

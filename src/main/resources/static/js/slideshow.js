@@ -216,3 +216,7 @@ function Host(pres_id){
     stompClient.connect({}, init);
 
 }
+
+$(document).ready(function() {
+	 $('#loginSignIn').click(function() {$(this).parent().submit();});
+ });

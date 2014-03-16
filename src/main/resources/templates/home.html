@@ -1,18 +1,33 @@
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <link rel="stylesheet" href="../static/css/style.css" media="all" /> <!-- KICKSTART -->
-    <title></title>
+    <link rel="stylesheet" href="/css/style.css" media="all" /> <!-- KICKSTART -->
+    <script src="/js/jquery-2.1.0.min.js" ></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+    	 $('#loginSignIn').click(function() {$(this).parent().submit();});
+      });
+    </script>
+    <title>Slideshow</title>
+</head>
 <body id="home">
 <div class="container">
     <div class="grid flex">
         <div class="col_12 navbar">
             <div class="pull-left" id="logo"></div>
-            <!-- Menu Horiz ontal -->
-            <form id="signin-form" class="pull-right">
-                <input type="text" name="email" placeholder="Email">
-                <input type="text" name="password" placeholder="Password">
-                <button type="button" class="small">Sign in</button>
-            </form>
+            <div id="loginSection">
+	            <div sec:authorize="isAuthenticated()">
+	        		Welcome <span th:text="${#authentication.name}"></span>
+	    		</div>
+	    		<div sec:authorize="isAnonymous()">
+		            <!-- Menu Horiz ontal -->
+		            <form id="signin-form" class="pull-right" th:action="@{/login}" method="POST">
+		                <input type="text" name="username" placeholder="Email" />
+		                <input type="text" name="password" placeholder="Password" />
+		                <button id="loginSignIn" type="button" class="small">Sign in</button>
+		            </form>
+	    		</div>
+            </div>
         </div>
         <div class="content center">
             <div class="col_12">
@@ -20,7 +35,6 @@
             </div>
             <div class="col_6">
                 <h5>Join a presentation</h5>
-                <p></p>
                 <button type="button" class="medium orange">Join a presentation</button>
             </div>
             <div class="col_6">

@@ -101,11 +101,11 @@ body{
     display: inline-block;
 }
 .loggedIn{
-	/*display: none;*/
+	display: none;
 }
-.anonymous{
+/* .anonymous{
     display: none;
-}
+} */
 .navbar{
     margin-top: 0;
 }

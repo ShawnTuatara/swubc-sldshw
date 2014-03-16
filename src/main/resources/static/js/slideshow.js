@@ -1,7 +1,8 @@
 function Client(pres_id){ 
     
-    var pres_id = pres_id
-    var pageID = null
+    var pres_id = pres_id;
+    var pageID = null;
+    var pageTitle = null;
     
     var header = {"username": null, "password": null};
       
@@ -21,10 +22,12 @@ function Client(pres_id){
     
     var recieve_topic_id_page = function(data){
         
-        pageID = JSON.parse(data.body);
-        console.log(pageID);
+        data = JSON.parse(data.body);
         
-        $("h3").text("test title");
+        pageID = data.pageID;
+        pageTitle = data.title;
+        
+        $("h3").text(pageTitle);
         $(".slide-number > h2").text(pageID)
         }
     
@@ -81,7 +84,7 @@ function Client(pres_id){
         
         $('#poll>.option').click(function () {
             
-            var me = $(this);        
+            var me = $(this);
             var others = $('#Poll>.option').not($(this));
             others.removeClass("active")
             
@@ -97,7 +100,8 @@ function Client(pres_id){
             });
     });
     
-    $('#Comment').click(function () {
+    $('#notes').click(function () {
+        $("#noteInput").css("display", "none");
         stompClient.send(ep, {}, JSON.stringify({ pageannotation: {question: true, pageId: pageID} }));
     });
     
@@ -130,11 +134,15 @@ function Host(pres_id){
             return page;
         }
         
-        var get_pageID = function (){
-            return "".concat(Reveal.getIndices().v, ",", Reveal.getIndices().h);
+        var get_pageData = function (){
+            
+            page_id = "".concat(Reveal.getIndices().v, ",", Reveal.getIndices().h)
+            page_title = $("section")[Reveal.getIndices().h];
+            
+            return {"page_title": page_title, "page_id": page_id}
             }
-        
-        stompClient.send(ep_page, {}, JSON.stringify(get_pageID()));
+        console.log(get_pageData());
+        stompClient.send(ep_page, {}, JSON.stringify(get_pageData()));
         stompClient.send(ep_relay, {}, JSON.stringify(packIndices()))
     }
     

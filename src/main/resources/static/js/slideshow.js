@@ -113,9 +113,11 @@ function Client(pres_id){
         var toggleInput = function(){
             if ($("#noteInput").css("display")=="block"){
                     $("#noteInput").css("display", "none");
+                    $(this).removeClass("active");
                 }
                 else {
                     $("#noteInput").css("display", "block");
+                    $(this).addClass("active");
                 }
         }
         

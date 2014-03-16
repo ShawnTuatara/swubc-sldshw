@@ -68,8 +68,12 @@ body{
     background-color: #e1e2e3;
     color: #353438;
 }
-#home{
+#home, #mobile{
     color: #ffffff;
+    background-color: #3d3c47;
+}
+#home .content{
+    margin-top: 30px;
 }
 #logo{
     position: relative;
@@ -121,6 +125,12 @@ button:hover{background: #25a180;}
 button.orange, button.orange:active
 {
     background: #f5a01f;
+}
+button.orange:hover{
+    opacity:.9
+}
+button:hover{
+    opacity: .8;
 }
 /*---------------------------------
 	COLUMN SIZES
@@ -415,9 +425,113 @@ button.medium{
     margin-bottom: 15px;
 }
 .slide-box{
+    position: relative;
+    top: 0;
+    bottom: 0;
+    cursor: pointer;
     border: 1px solid #b8b3b7;
     margin-left: 0px;
     padding: 0 15px;
     height: 200px;
 }
+.add-slide{
+    margin-top: 28px;
+    font-size: 1.8em;
+}
+.add-slide a{
+    text-decoration: none;
+    color: #4f4d65;
+}
+/*Cool Caption*/
+/* Caption Style 3 */
+.cs-style-3 figure {
+    overflow: hidden;
+}
+
+.cs-style-3 figure img {
+    -webkit-transition: -webkit-transform 0.4s;
+    -moz-transition: -moz-transform 0.4s;
+    transition: transform 0.4s;
+}
+
+.no-touch .cs-style-3 figure:hover img,
+.cs-style-3 figure.cs-hover img {
+    -webkit-transform: translateY(-50px);
+    -moz-transform: translateY(-50px);
+    -ms-transform: translateY(-50px);
+    transform: translateY(-50px);
+}
+
+.slide-box .caption {
+    height: 100px;
+    width: 100%;
+    top: auto;
+    bottom: 0;
+    opacity: 0;
+    -webkit-transform: translateY(100%);
+    -moz-transform: translateY(100%);
+    -ms-transform: translateY(100%);
+    transform: translateY(100%);
+    -webkit-transition: -webkit-transform 0.4s, opacity 0.1s 0.3s;
+    -moz-transition: -moz-transform 0.4s, opacity 0.1s 0.3s;
+    transition: transform 0.4s, opacity 0.1s 0.3s;
+}
+
+.slide-box:hover .caption {
+    opacity: 1;
+    -webkit-transform: translateY(200px);
+    -moz-transform: translateY(200px);
+    -ms-transform: translateY(200px);
+    transform: translateY(200px);
+    -webkit-transition: -webkit-transform 0.4s, opacity 0.4s;
+    -moz-transition: -moz-transform 0.4s, opacity 0.4s;
+    transition: transform 0.4s, opacity 0.4s;
+}
+
+.slide-box .caption {
+    background-color: #9d9bb2;
+    opacity: 0;
+    position: absolute;
+    bottom: 200px;
+    left: 0px;
+}
+.heart{
+    display: inline-block;
+    margin-top: 15px;
+    margin-left: 4px;
+    width: 70px;
+    height: 65px;
+    background: url("../img/heart-white.svg");
+}
+.heart:hover{
+    background: url("../img/heart-green.svg");
+}
+.quetion{
+    display: inline-block;
+    width: 70px;
+    height: 65px;
+    background: url("../img/question-white.svg");
+}
+.question:hover{
+    background: url("../img/question-green.svg");
+}
+.notes{
+    display: inline-block;
+    width: 70px;
+    height: 65px;
+    background: url("../img/notes-white.svg");
+}
+.notes:hover{
+    background: url("../img/notes-green.svg");
+}
+.header-background{
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 105px;
+    position: absolute;
+    background-color: #3d3c47;
+}
+
 

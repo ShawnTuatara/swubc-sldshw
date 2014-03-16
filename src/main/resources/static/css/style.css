@@ -640,6 +640,9 @@ button.medium{
     height: 150px;
     width: 100%;
 }
+#thank-you .heart, #thank-you .question, #thank-you{
+    /*height: ;*/
+}
 
 
 

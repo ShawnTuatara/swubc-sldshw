@@ -1,6 +1,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}" media="all" /> <!-- KICKSTART -->
+    <link rel="stylesheet" href="../static/css/style1.css" th:href="@{/css/style.css}" media="all" /> <!-- KICKSTART -->
     <title></title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="../static/js/kickstart.js" th:src="@{/js/kickstart.js}"></script> <!-- KICKSTART -->
@@ -19,8 +20,6 @@
         <div class="content center">
             <div class="col_12">
                     <h1>Something Awesome about us!</h1>
-
-                <div class="actions"></div>
                 <div class="heart"></div>
                 <div class="question"></div>
                 <div class="notes"></div>
@@ -29,6 +28,10 @@
         </div>
     </div>
     <div th:include="register :: content" class="grid flex hidden"></div>
+</div>
+<div class="overlay overlay-hugeinc">
+    <button type="button" class="overlay-close">Close</button>
+    <p>test</p>
 </div>
 </body>
 </html>

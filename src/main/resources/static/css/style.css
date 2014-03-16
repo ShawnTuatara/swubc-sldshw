@@ -77,7 +77,7 @@ body{
     margin-top: 24px;
 }
 .mobile .content{
-    position: relative;
+    /*position: relative;*/
 }
 .mobile .heart, .mobile .question, .mobile .notes{
     width: 300px;
@@ -445,6 +445,9 @@ input[type="file"]{
 button.medium{
     font-size:1.1em;padding:16px 20px;
 }
+button.large{
+    font-size:3.5em;padding:32px 40px;
+}
 
 /* Smartphones (landscape) ----------- */
 @media (max-width: 767px) {
@@ -643,6 +646,12 @@ button.medium{
 }
 #thank-you .heart, #thank-you .question, #thank-you{
     /*height: ;*/
+}
+/**/
+.overlay{
+    color: #ffffff;
+    height: 100px;
+    width: 100px;
 }
 
 

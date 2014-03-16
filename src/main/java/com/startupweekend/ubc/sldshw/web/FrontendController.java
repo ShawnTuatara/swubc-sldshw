@@ -13,6 +13,11 @@ public class FrontendController {
 	@RequestMapping("/client/")
 	public String client() {
 		return "client";
-	} 
- 
+	}
+
+    @RequestMapping("/host/")
+    public String host() {
+        return "host";
+    }
+    
 }

@@ -5,7 +5,7 @@
     <script src="/js/jquery-2.1.0.min.js" ></script>
     <script src="/js/stomp.js" ></script>
     <script src="/js/sockjs-0.3.4.min.js" ></script>
-    
+    <link href="/css/graph.css" rel="stylesheet"></link>
     <script src="/js/reveal.js" ></script>
 </head>
  
@@ -29,11 +29,24 @@
                 <p>Slide 2 discussed here</p>
                 <p>See <a href="http://www.htmlcheats.com">HTMLCheats.com</a></p>
             </section>
+            
+            <section>
+                <!-- content to be placed inside <body>…</body> -->
+                <div class="graph">
+                        <div style="height: 22px;" class="bar"></div><!--
+                        --><div style="height: 11px;" class="bar"></div><!--
+                        --><div style="height: 6px;" class="bar"></div><!--
+                        --><div style="height: 49px;" class="bar"></div><!--
+                        --><div style="height: 28px;" class="bar"></div>
+                </div>
+            </section>
+            
         </div>
         <script>
             Reveal.initialize({});
         </script>
         <script src="/js/slideshow.js" ></script>
+        <script> var host = new Host(1); </script>
         
     </div>
 </body>

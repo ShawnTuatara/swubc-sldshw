@@ -1,40 +1,26 @@
 var get_page_id = function (){
-    page = {'v': Reveal.getIndices().v,
-            'h': Reveal.getIndices().h,
-            'f': Reveal.getIndices().f || 0};
-            
-    page_id = "".concat(Reveal.getIndices().v, ":", Reveal.getIndices().h);
-    return page_id;}
+
+    return "".concat(Reveal.getIndices().v, ",", Reveal.getIndices().h);}
 
 function Client(pres_id){ 
     
     var pres_id = pres_id
     
-    $('h1').click(function(data){
-        
-        /*
-        stompClient.send("/", {}, JSON.stringify({ 'body': page }));
-        */
-        
-    });
-    
+    var header = {"username": null, "password": null};
+      
     /* endpoints */
     var ep = "".concat("/presentation/", pres_id)
     var ep_page = "".concat(ep, "/page")
-    var ep_summary = "".concat(ep, "/page")
+    var ep_summary = "".concat(ep, "/summary")
     var topic_ep_page = "".concat('/topic', ep_page)
     var topic_ep_summary = "".concat('/topic', ep_summary)
 
-    /*
-    initialize host and establish subscriptions
-    */
-       
+    /* initialize host and establish subscriptions */
     var recieve_id = function (data){console.log(data)};
-    var recieve_id_page = function(data){
-        console.log("page")
-        console.log(data);};
-        
-    var recieve_topic_id_page = function (data){console.log(data)};
+    var recieve_id_page = function(data){$("#PageNum").text(data);}
+    var recieve_topic_id_page = function(data){
+        console.log(data);
+        $("#PageNum").text(data.body);}
     var recieve_id_summary = function(data){console.log(data)};
     var recieve_topic_id_summary = function (data){console.log(data)};
     
@@ -52,26 +38,42 @@ function Client(pres_id){
     stompClient = Stomp.over(socket);
     stompClient.connect({}, do_subscriptions);
     
+    /*
+    $('#MainControl').click(function () {
+        stompClient.send(ep, {}, 1);
+    });
+    */
     
     $('#Heart').click(function () {
-        stompClient.send(ep, {}, { pageannotation: {heart: true, pageId: get_page_id()} });
+        stompClient.send(ep, {}, JSON.stringify({ pageannotation: {heart: true, pageId: get_page_id()} }));
     });
     
     $('#Comment').click(function () {
-        stompClient.send(ep, {}, { pageannotation: {question: true, pageId: get_page_id()} });
+        stompClient.send(ep, {}, JSON.stringify({ pageannotation: {question: true, pageId: get_page_id()} }));
     });
     
     $('#Question').click(function () 
     {
-        stompClient.send(ep, {}, { pageannotation: {comment: true, pageId: get_page_id()} });
+        stompClient.send(ep, {}, JSON.stringify({ pageannotation: {comment: true, pageId: get_page_id()} }));
     });
     
+    var register = function (data) {
+        stompClient.send("/register", {}, { body: data});
+    }
 }
 
-function Host(){
-    /*
-    slideshow control event
-    */
+function Host(pres_id){
+    
+    var pres_id = pres_id
+    
+    /* endpoints */
+    var ep = "".concat("/presentation/", pres_id)
+    var ep_page = "".concat(ep, "/page")
+    var ep_summary = "".concat(ep, "/summary")
+    var topic_ep_page = "".concat('/topic', ep_page)
+    var topic_ep_summary = "".concat('/topic', ep_summary)
+
+    /* slideshow control event */
     
     var slidechanged = function(){
 
@@ -83,25 +85,26 @@ function Host(){
             return page;
 
         }
-        stompClient.send("/", {}, JSON.stringify({ 'body': packIndices() }));
+        var pageId = get_page_id();
+        console.log(pageId);
+        console.log(typeof pageId);
+        stompClient.send(ep_page, {}, JSON.stringify(pageId));
     }
     
     Reveal.addEventListener("slidechanged", slidechanged);
     
-    /*
-    incoming data processing
-    */
+    /* incoming data processing */
     
     var data_recieved = function(data) {
+        console.log("host received data")
         console.log(data);
     }
 
-    /*
-    initialize host and establish subscriptions
-    */
+    /* initialize host and establish subscriptions */
     
     var do_subscriptions = function(){
-        stompClient.subscribe("/", data_recieved);
+        stompClient.subscribe(ep, data_recieved);
+        stompClient.subscribe(ep_page, data_recieved);
     }
     
     var socket = new SockJS('/socket');
@@ -109,5 +112,3 @@ function Host(){
     stompClient.connect({}, do_subscriptions);
 
 }
-
-c = Client(1);

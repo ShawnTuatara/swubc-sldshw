@@ -8,11 +8,15 @@
     <script src="/js/sockjs-0.3.4.min.js" ></script>
     <script src="/js/reveal.js" ></script>
     <script src="/js/shuclient.js" ></script>
+    <script src="/js/slideshow.js" ></script>
+    <script> var client = new Client(1); </script>
+    
 </head>
 <body>
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being enabled. Please enable
     Javascript and reload this page!</h2></noscript>
 <div>
+
     <div>
         <button id="connect" onclick="connect();">Connect</button>
         <button id="disconnect" disabled="disabled" onclick="disconnect();">Disconnect</button>

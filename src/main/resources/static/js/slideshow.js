@@ -20,7 +20,17 @@ $(document).ready(function(){
                 console.log(greeting);
             });
             
+            stompClient.subscribe('/topic/presentation/1/page', function(pagenum){
+            	console.log('received: ' + pagenum);
+            	document.getElementById('currentPage').innerHTML = pagenum;
+            })
+            
         });}
+    
+    function setPage() {
+    	 stompClient.send("/presentation/1/page", {}, document.getElementById('pagenumbertoset').value);
+    }
+    $('#setPage').click(setPage);
     
     function sendComment() {
         stompClient.send("/comment", {}, JSON.stringify({ 'body': "This is through sockets" }));

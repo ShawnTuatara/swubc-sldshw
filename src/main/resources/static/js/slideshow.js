@@ -31,9 +31,14 @@ function Client(pres_id){
         pageId = data.pageId;
         pageTitle = data.title;
         
-        $("h1").text(pageTitle);
+        $("#pageTitle").text(pageTitle);
+        $("#pageId").text(pageId)
+        
         console.log(pageId)
-        $(".slide-number > h2").text(pageId)
+        if (pageId==2){
+            $("#feedback").addClass('hidden');
+            $("#register").removeClass('hidden')
+        }
         
         var topic_ep_page_id = "".concat(topic_ep_page, pageID)
         
@@ -162,7 +167,7 @@ function Host(pres_id){
         
         var get_pageData = function (){
             
-            page_id = "".concat(Reveal.getIndices().v, ",", Reveal.getIndices().h)
+            page_id = Reveal.getIndices().h.toString(); /*"".concat(Reveal.getIndices().v, ",", Reveal.getIndices().h)*/
             title = $($("section")[Reveal.getIndices().h]).find("h1").text();/*$("section")[Reveal.getIndices().h];*/
             
             return {"title": title, pageId: page_id}

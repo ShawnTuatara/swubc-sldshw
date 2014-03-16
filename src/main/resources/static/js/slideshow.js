@@ -1,4 +1,4 @@
-var lastPage = 4
+var lastPage = 12
 
 function Client(pres_id){ 
     
@@ -35,12 +35,18 @@ function Client(pres_id){
         console.log(data)
         
         $("#pageTitle").text(pageTitle);
-        
-        console.log(lastPage);
+ 
+        if ($("#feedback").hasClass("hidden")){
+            $("#feedback").removeClass('hidden');
+            $("#register").addClass('hidden');
+        }
+ 
         if (pageId==lastPage){
             $("#feedback").addClass('hidden');
             $("#register").removeClass('hidden')
         }
+        
+
         
         var topic_ep_page_id = "".concat(topic_ep_page, pageId)
         
@@ -54,6 +60,7 @@ function Client(pres_id){
     
     var recieve_topic_id_summary = function (data){
         console.log(data)
+        
         }
     
     var init = function(){

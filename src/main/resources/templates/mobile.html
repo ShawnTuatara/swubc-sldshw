@@ -2,6 +2,12 @@
 <head>
     <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}" media="all" /> <!-- KICKSTART -->
     <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="../static/js/kickstart.js" th:src="@{/js/kickstart.js}"></script> <!-- KICKSTART -->
+    <script src="../static/js/stomp.js" th:src="@{/js/stomp.js}"></script>
+    <script src="../static/js/sockjs-0.3.4.min.js" th:src="@{/js/sockjs-0.3.4.min.js}"></script>
+    <script src="../static/js/slideshow.js" th:src="@{/js/slideshow.js}"></script>
+    <script> var host = new Client(1); </script>
 </head>
 <body class="mobile">
 <div>
@@ -17,18 +23,12 @@
                 <div id="noteInput" style="display:none; position: relative; top: 0; bottom: 0;"><textarea id="note"></textarea><button class="blue medium" id="noteSubmit">Submit</button></div>
             </div>
         </div>
+        <div th:replace="register :: content"></div>
         <div class="footer-mobile">
             <div class="pull-right" id="logo"></div>
             <div class="slide-number"><h2>2/12</h2></div>
         </div>
     </div>
 </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="HTML-KickStart-master/js/kickstart.js"></script> <!-- KICKSTART -->
-    <script src="/js/stomp.js" ></script>
-    <script src="/js/sockjs-0.3.4.min.js" ></script>
-    <script src="/js/slideshow.js" ></script>
-    <script> var host = new Client(1); </script>
-    
 </body>
 </html>

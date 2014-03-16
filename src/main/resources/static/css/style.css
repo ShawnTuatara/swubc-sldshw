@@ -83,6 +83,9 @@ body{
     width: 100px;
     height: 100px;
 }
+.mobile .question{
+    margin: 0 25px;
+}
 #home .content{
     margin-top: 30px;
 }
@@ -100,8 +103,16 @@ body{
 .loggedIn{
 	display: none;
 }
+/* .anonymous{
+    display: none;
+} */
 .navbar{
     margin-top: 0;
+}
+a{
+    display: inline-block;
+    text-decoration: none;
+    color: #ffffff;
 }
 /*---------------------------------
 	BUTTONS
@@ -624,6 +635,13 @@ button.medium{
 
 .speech-bubble span{
     display: inline-block;
+}
+#note{
+    height: 150px;
+    width: 100%;
+}
+#thank-you .heart, #thank-you .question, #thank-you{
+    /*height: ;*/
 }
 
 

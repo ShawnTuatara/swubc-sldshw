@@ -1,7 +1,8 @@
 function Client(pres_id){ 
     
-    var pres_id = pres_id
-    var pageID = null
+    var pres_id = pres_id;
+    var pageID = null;
+    var pageTitle = null;
     
     var header = {"username": null, "password": null};
       
@@ -20,10 +21,14 @@ function Client(pres_id){
         $("#PageNum").text(data);}
     
     var recieve_topic_id_page = function(data){
-        console.log(data);
-        pageID = data;
         
-        $("h3").text("test title");
+        data = JSON.parse(data.body);
+        
+        pageID = data.pageID;
+        pageTitle = data.title;
+        
+        $("h3").text(pageTitle);
+        $(".slide-number > h2").text(pageID)
         }
     
     var recieve_id_summary = function(data){
@@ -51,7 +56,7 @@ function Client(pres_id){
     /* bind client functions */
     
     $(document).ready(function(){
-        $('#heart').click(function () {
+        $('.heart').click(function () {
             me = $(this)
             
             if (me.hasClass("active") == false){
@@ -64,7 +69,7 @@ function Client(pres_id){
                 }
         });
         
-        $('#question').click(function () {
+        $('.question').click(function () {
             me = $(this)
             
             if (me.hasClass("active") == false){
@@ -79,7 +84,7 @@ function Client(pres_id){
         
         $('#poll>.option').click(function () {
             
-            var me = $(this);        
+            var me = $(this);
             var others = $('#Poll>.option').not($(this));
             others.removeClass("active")
             
@@ -95,7 +100,8 @@ function Client(pres_id){
             });
     });
     
-    $('#Comment').click(function () {
+    $('#notes').click(function () {
+        $("#noteInput").css("display", "none");
         stompClient.send(ep, {}, JSON.stringify({ pageannotation: {question: true, pageId: pageID} }));
     });
     
@@ -112,12 +118,12 @@ function Host(pres_id){
     var ep = "".concat("/presentation/", pres_id)
     var ep_page = "".concat(ep, "/page")
     var ep_summary = "".concat(ep, "/summary")
-    var ep_relay = "".concat(ep, "/summary")
+    var ep_relay = "".concat(ep, "/relay")
     var topic_ep_page = "".concat('/topic', ep_page)
+    var topic_ep_relay = "".concat('/topic', ep, "/relay")
     var topic_ep_summary = "".concat('/topic', ep_summary)
 
     /* slideshow control event */
-    
     var slidechanged = function(){
 
         var packIndices = function (){
@@ -128,11 +134,15 @@ function Host(pres_id){
             return page;
         }
         
-        var get_pageID = function (){
-            return "".concat(Reveal.getIndices().v, ",", Reveal.getIndices().h);
+        var get_pageData = function (){
+            
+            page_id = "".concat(Reveal.getIndices().v, ",", Reveal.getIndices().h)
+            page_title = $("section")[Reveal.getIndices().h];
+            
+            return {"page_title": page_title, "page_id": page_id}
             }
-        
-        stompClient.send(ep_page, {}, JSON.stringify(get_pageID()));
+        console.log(get_pageData());
+        stompClient.send(ep_page, {}, JSON.stringify(get_pageData()));
         stompClient.send(ep_relay, {}, JSON.stringify(packIndices()))
     }
     
@@ -145,7 +155,10 @@ function Host(pres_id){
     }
 
     var go_to_slide = function(data){
-        Reveal.slide(data.v, data.h, data.f);
+
+        data = JSON.parse(data.body);
+        /* This locks hosts together */
+        /* Reveal.slide(data.v, data.h, data.f); */
         }
 
     /* initialize host and establish subscriptions */
@@ -153,7 +166,7 @@ function Host(pres_id){
     var init = function(){
         stompClient.subscribe(ep, data_recieved);
         stompClient.subscribe(ep_page, data_recieved);
-        stompClient.subscribe(ep_relay, go_to_slide);
+        stompClient.subscribe(topic_ep_relay, go_to_slide);
 
     }
     

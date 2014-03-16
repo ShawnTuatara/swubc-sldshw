@@ -121,4 +121,8 @@ public class MessagingController {
 		return response;
 	}
 	
+	@MessageMapping("/allData")
+	public String getSummary() {
+		return data.toString();
+	}
 }

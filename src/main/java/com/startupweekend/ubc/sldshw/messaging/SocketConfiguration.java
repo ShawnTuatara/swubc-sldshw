@@ -21,5 +21,4 @@ public class SocketConfiguration extends AbstractWebSocketMessageBrokerConfigure
 		registry.addEndpoint("/socket").withSockJS();
 	}
 
-
 }

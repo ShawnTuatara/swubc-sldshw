@@ -18,14 +18,17 @@ import org.springframework.stereotype.Controller;
 import com.startupweekend.ubc.sldshw.datamodel.PageAnnotation;
 import com.startupweekend.ubc.sldshw.datamodel.Pair;
 import com.startupweekend.ubc.sldshw.datamodel.Response;
+import com.startupweekend.ubc.sldshw.datamodel.Stats;
 
 @Controller
 @Slf4j
 public class MessagingController {
 	
-	/** Maps presentation/user -> pageId -> annotations. */
-	private Map<Pair<String, String>, Map<String, PageAnnotation>> data
-		= new HashMap<Pair<String, String>, Map<String, PageAnnotation>>();
+	private final Object lock = new Object();
+	
+	/** Maps presentation -> user -> pageId -> annotations. */
+	private Map<String, Map<String, Map<String, PageAnnotation>>> data
+		= new HashMap<String, Map<String, Map<String, PageAnnotation>>>();
 
 	@MessageMapping("/presentation/{id}/page")
 	public String updatePageId(
@@ -41,14 +44,26 @@ public class MessagingController {
 			@Header(SimpMessageHeaderAccessor.SESSION_ID_HEADER) String userId,
 			PageAnnotation annotation) {
 		System.out.println("annotatePage - presentationId: " + presentationId + ", userId: " + userId + ", annotation: " + annotation);
-		Pair<String, String> id = new Pair<String, String>(presentationId, userId);
+		
+		// get the per presentation data set
+		if (!data.containsKey(presentationId)) {
+			synchronized(lock) {
+				if (!data.containsKey(presentationId)) {
+					data.put(presentationId, new HashMap<String, Map<String, PageAnnotation>>());
+				}
+			}
+		}
+		
+		Map<String, Map<String, PageAnnotation>>presentationData = data.get(presentationId);
+		
+		// get the per user data set
 		Map<String, PageAnnotation> existingAnnotations;
-		if (!data.containsKey(id)) {
+		if (!presentationData.containsKey(userId)) {
 			existingAnnotations = new HashMap<String, PageAnnotation>();
-			data.put(id, existingAnnotations);
+			presentationData.put(userId, existingAnnotations);
 		}
 		else {
-			existingAnnotations = data.get(id);
+			existingAnnotations = presentationData.get(userId);
 		}
 		
 		// look up existing annotation and 'update' it with new info only
@@ -72,22 +87,38 @@ public class MessagingController {
 	
 	@MessageMapping("/presentation/{id}/summary")
 	//@SendToUser
-	public String getSummary(
+	public Response getSummary(
 			@DestinationVariable("id") String presentationId,
 			@Header(SimpMessageHeaderAccessor.SESSION_ID_HEADER) String userId) {
 		System.out.println("summary - presentationId: " + presentationId + ", userId: " + userId);
 
-		List<PageAnnotation> annotations = new ArrayList<PageAnnotation>();
+		List<PageAnnotation> userAnnotations = new ArrayList<PageAnnotation>();
+		Map<String, Stats> presentationStats = new HashMap<String, Stats>();
 		
-		Pair<String, String> id = new Pair<String, String>(presentationId, userId);
-		Map<String, PageAnnotation> savedAnnotations = data.get(id);
-		if (savedAnnotations != null) {
-			annotations.addAll(savedAnnotations.values());
+		Map<String, Map<String, PageAnnotation>> presentationData = data.get(presentationId);
+		if (presentationData == null) {
+			return null;
 		}
 		
-		Response response = new Response(annotations, null);
+		Map<String, PageAnnotation> savedAnnotations = presentationData.get(userId);
+		if (savedAnnotations != null) {
+			userAnnotations.addAll(savedAnnotations.values());
+		}
+		
+		for (Map<String, PageAnnotation> annotationsForUser : presentationData.values()) {
+			for (PageAnnotation annotation: annotationsForUser.values()) {
+				if (!presentationStats.containsKey(annotation.getPageId())) {
+					presentationStats.put(annotation.getPageId(), new Stats(annotation.getPageId()));
+				}
+				presentationStats.get(annotation.getPageId()).collect(annotation);
+			}
+		}
+		
+		List<Stats> stats = new ArrayList<Stats>(presentationStats.size());
+		stats.addAll(presentationStats.values());
+		Response response = new Response(userAnnotations, stats);
 		System.out.println("result: " + response);
-		return response.toString();
+		return response;
 	}
 	
 }

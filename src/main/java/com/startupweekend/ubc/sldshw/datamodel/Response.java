@@ -8,9 +8,9 @@ import lombok.Data;
 public class Response {
 
 	private List<PageAnnotation> annotations;
-	private Stats stats;
+	private List<Stats> stats;
 	
-	public Response(List<PageAnnotation> annotations, Stats stats) {
+	public Response(List<PageAnnotation> annotations, List<Stats> stats) {
 		this.annotations = annotations;
 		this.stats = stats;
 	}

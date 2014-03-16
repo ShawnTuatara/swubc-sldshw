@@ -31,24 +31,24 @@ public class MessagingController {
 	private Map<String, Map<String, Map<String, PageAnnotation>>> data
 		= new HashMap<String, Map<String, Map<String, PageAnnotation>>>();
 	private Map<String, String> userSessionMappingHack = new HashMap<String, String>();
-	private Map<String, String> presentationPage = new HashMap<String, String>();
+	private Map<String, SlideMeta> presentationPage = new HashMap<String, SlideMeta>();
 	
 	/** Maps presentation -> pageId -> summary stats */
 	private Map<String, Map<String, Stats>> presentationPageStats = new HashMap<String, Map<String, Stats>>();
-
+	
 	@MessageMapping("/presentation/{id}/page")
 	public SlideMeta updatePage(
 			@DestinationVariable("id") String presentationId,
 			SlideMeta slide) {
 		System.out.println("updatePageId - presentationId: " + presentationId + ", slide: " + slide);
 		synchronized(presentationPageLock) {
-			presentationPage.put(presentationId, slide.getPageId());
+			presentationPage.put(presentationId, slide);
 		}
 		return slide;
 	}
 
 	@SubscribeMapping("/topic/presentation/{id}/page")
-	public String subscribeToUpdatePage(@DestinationVariable("id") String presentationId) {
+	public SlideMeta subscribeToUpdatePage(@DestinationVariable("id") String presentationId) {
 		System.out.println("subscribeToUpdatePage - presentationId: " + presentationId);
 		return presentationPage.get(presentationId);
 	}

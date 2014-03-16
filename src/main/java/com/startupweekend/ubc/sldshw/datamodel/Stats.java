@@ -16,7 +16,7 @@ import lombok.ToString;
  */
 @ToString
 @EqualsAndHashCode
-public class Stats {
+public class Stats implements Comparable<Stats> {
 	
 	@Getter
 	private final String pageId;
@@ -57,5 +57,18 @@ public class Stats {
 			}
 			voteCounts.get(annotation.getVote()).incrementAndGet();
 		}
+	}
+
+	@Override
+	public int compareTo(Stats o) {
+		int engagement = heartCount.get() + questionCount.get();
+		int otherEngagement = o.heartCount.get() + o.questionCount.get();
+		if (engagement == otherEngagement) {
+			return 0;
+		}
+		if (engagement > otherEngagement) {
+			return 1;
+		}
+		return -1;
 	}
 }

@@ -5,23 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 
 import com.startupweekend.ubc.sldshw.datamodel.PageAnnotation;
-import com.startupweekend.ubc.sldshw.datamodel.Pair;
 import com.startupweekend.ubc.sldshw.datamodel.Response;
 import com.startupweekend.ubc.sldshw.datamodel.Stats;
 
 @Controller
-@Slf4j
 public class MessagingController {
 	
 	private final Object lock = new Object();
@@ -29,6 +23,7 @@ public class MessagingController {
 	/** Maps presentation -> user -> pageId -> annotations. */
 	private Map<String, Map<String, Map<String, PageAnnotation>>> data
 		= new HashMap<String, Map<String, Map<String, PageAnnotation>>>();
+	private Map<String, String> userSessionMappingHack = new HashMap<String, String>();
 
 	@MessageMapping("/presentation/{id}/page")
 	public String updatePageId(
@@ -89,8 +84,13 @@ public class MessagingController {
 	//@SendToUser
 	public Response getSummary(
 			@DestinationVariable("id") String presentationId,
-			@Header(SimpMessageHeaderAccessor.SESSION_ID_HEADER) String userId) {
+			@Header(SimpMessageHeaderAccessor.SESSION_ID_HEADER) String userId,
+			String email) {
 		System.out.println("summary - presentationId: " + presentationId + ", userId: " + userId);
+		
+		if (userSessionMappingHack.containsKey(email)) {
+			userId = userSessionMappingHack.get(email);
+		}
 
 		List<PageAnnotation> userAnnotations = new ArrayList<PageAnnotation>();
 		Map<String, Stats> presentationStats = new HashMap<String, Stats>();
@@ -123,6 +123,13 @@ public class MessagingController {
 	
 	@MessageMapping("/allData")
 	public String getSummary() {
-		return data.toString();
+		return data.toString() + "\n" + userSessionMappingHack.toString();
+	}
+	
+	@MessageMapping("/register")
+	public void register(
+			String email,
+			@Header(SimpMessageHeaderAccessor.SESSION_ID_HEADER) String userId) {
+		userSessionMappingHack.put(email, userId);
 	}
 }

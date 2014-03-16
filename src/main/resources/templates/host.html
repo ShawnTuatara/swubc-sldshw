@@ -38,6 +38,20 @@
     .x.axis path {
       display: none;
     }
+    #results table{
+        margin: 0 auto;
+        text-align: left;
+        color: #ffffff;
+    }
+    #results td{
+        text-align: center;
+    }
+    #results td:first-child{
+        text-align: left;
+    }
+    #results span{
+        margin-right: 15px;
+    }
 
     </style>
 </head>
@@ -72,9 +86,54 @@
             <section>
                 <!-- content to be placed inside <body>…</body> -->
                 <h1> Thank You</h1>
-                <div id="">
-                    <div class="heart"></div>
-                    <div class="question"></div>
+                <div id="results">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td></td>
+                                <td class="heart active"></td>
+                                <td class="question active"></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span>8</span>Slide 1's title</td>
+                                <!--heart-->
+                                <td>2</td>
+                                <!--questions-->
+                                <td>4</td>
+                            </tr>
+                            <tr>
+                                <td><span>2</span>Very very very long title</td>
+                                <!--heart-->
+                                <td>2</td>
+                                <!--questions-->
+                                <td>4</td>
+                            </tr>
+                            <tr>
+                                <td><span>5</span>Slide 5's title</td>
+                                <!--heart-->
+                                <td>2</td>
+                                <!--questions-->
+                                <td>4</td>
+                            </tr>
+                            <tr>
+                                <td><span>4</span>A large slide title</td>
+                                <!--heart-->
+                                <td>2</td>
+                                <!--questions-->
+                                <td>4</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!--<ul>-->
+                        <!--<li><span>1</span>Slide 1's title</li>-->
+                        <!--<li><span>5</span>Slide 2's title</li>-->
+                        <!--<li><span>8</span>Slide 3's title</li>-->
+                        <!--<li><span>3</span>Slide 4's title</li>-->
+                    <!--</ul>-->
+                </div>
+                <div>
                 </div>
             </section>
         </div>

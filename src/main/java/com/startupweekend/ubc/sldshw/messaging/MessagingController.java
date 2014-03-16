@@ -52,6 +52,26 @@ public class MessagingController {
 		return presentationPage.get(presentationId);
 	}
 	
+	@SubscribeMapping("/topic/presentation/{id}/page/{pageId}")
+	public PageAnnotation subscribeToPage(
+			@DestinationVariable("id") String presentationId,
+			@DestinationVariable("pageId") String pageId,
+			@Header(SimpMessageHeaderAccessor.SESSION_ID_HEADER) String userId) {
+		System.out.println("subscribeToUpdatePage - presentationId: "
+				+ presentationId + ", pageId: " + pageId);
+		Map<String, Map<String, PageAnnotation>> presentationData = data
+				.get(presentationId);
+		PageAnnotation pageAnnotation = null;
+		if (presentationData != null) {
+			Map<String, PageAnnotation> existingAnnotations = presentationData
+					.get(userId);
+			if (existingAnnotations != null) {
+				pageAnnotation = existingAnnotations.get(pageId);
+			}
+		}
+		return pageAnnotation;
+	}
+	
 	@MessageMapping("/presentation/{id}/page/{pageId}")
 	public Stats annotatePage(
 			@DestinationVariable("id") String presentationId,

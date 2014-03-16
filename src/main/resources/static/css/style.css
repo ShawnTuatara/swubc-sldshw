@@ -83,6 +83,9 @@ body{
     width: 100px;
     height: 100px;
 }
+.mobile .question{
+    margin: 0 25px;
+}
 #home .content{
     margin-top: 30px;
 }
@@ -632,6 +635,10 @@ button.medium{
 
 .speech-bubble span{
     display: inline-block;
+}
+#note{
+    height: 150px;
+    width: 100%;
 }
 
 

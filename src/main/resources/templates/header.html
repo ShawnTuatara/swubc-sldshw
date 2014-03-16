@@ -1,6 +1,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
+	<link rel="shortcut icon" href="../static/favicon.ico" th:href="@{/favicon.ico}" type="image/x-icon" />
+	<link rel="icon" href="../static/favicon.ico" th:href="@{/favicon.ico}" type="image/x-icon" />
     <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}" media="all" /> <!-- KICKSTART -->
     <script src="../static/js/jquery-2.1.0.min.js" th:src="@{/js/jquery-2.1.0.min.js}" ></script>
     <script type="text/javascript">
@@ -26,7 +28,7 @@
                     <!--not logged in-->
 		            <form id="signin-form" class="pull-right" th:action="@{/login}" method="POST">
 		                <input type="text" name="username" placeholder="Email" />
-		                <input type="text" name="password" placeholder="Password" />
+		                <input type="password" name="password" placeholder="Password" />
 		                <button id="loginSignIn" class="blue small" type="button">Sign in</button>
 		            </form>
 	    		</div>

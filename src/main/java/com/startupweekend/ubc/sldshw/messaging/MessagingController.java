@@ -6,21 +6,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 
+import com.startupweekend.ubc.sldshw.SldShwUserDetailsService;
 import com.startupweekend.ubc.sldshw.datamodel.PageAnnotation;
-import com.startupweekend.ubc.sldshw.datamodel.StatsSummaries;
 import com.startupweekend.ubc.sldshw.datamodel.SlideMeta;
 import com.startupweekend.ubc.sldshw.datamodel.Stats;
+import com.startupweekend.ubc.sldshw.datamodel.StatsSummaries;
 
 @Controller
 public class MessagingController {
+	@Autowired
+	private SldShwUserDetailsService userDetails = null;
 	
 	private final Object lock = new Object();
 	private final Object presentationPageLock = new Object();
@@ -30,6 +36,7 @@ public class MessagingController {
 	/** Maps presentation -> user -> pageId -> annotations. */
 	private Map<String, Map<String, Map<String, PageAnnotation>>> data
 		= new HashMap<String, Map<String, Map<String, PageAnnotation>>>();
+	/** email, sessionId **/
 	private Map<String, String> userSessionMappingHack = new HashMap<String, String>();
 	private Map<String, SlideMeta> presentationPage = new HashMap<String, SlideMeta>();
 	
@@ -218,6 +225,15 @@ public class MessagingController {
 	public void register(
 			String email,
 			@Header(SimpMessageHeaderAccessor.SESSION_ID_HEADER) String userId) {
+		UserDetails userDetail = null;
+		try {
+			userDetail = userDetails.loadUserByUsername(email);
+		} catch (UsernameNotFoundException e) {
+			// will take action after
+		}
+		if(userDetail == null) {
+			userDetails.addUsername(email);
+		}
 		userSessionMappingHack.put(email, userId);
 	}
 	
@@ -226,6 +242,4 @@ public class MessagingController {
 			@Payload Map message) {
 		return message;
 	}
-	
-
 }

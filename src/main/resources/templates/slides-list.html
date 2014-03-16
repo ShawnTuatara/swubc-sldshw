@@ -15,7 +15,7 @@
                 <div class="page-header">
                     <h3>Your Presentations</h3>
                 </div>
-                <div class="col_3 slide-box">
+                <div sec:authorize="hasRole('PRESENTER')" class="col_3 slide-box">
                     <h5>copy of the first page of the presentation</h5>
                     <div class="caption">
                         <div class="heart"></div>

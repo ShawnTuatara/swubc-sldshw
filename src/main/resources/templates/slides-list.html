@@ -10,12 +10,7 @@
     <div class="header-background"></div>
     <div class="container">
         <div class="grid flex">
-            <div th:replace="header :: header" class="col_12 navbar">
-                <div class="pull-left" id="logo"></div>
-                <div sec:authorize="isAuthenticated()">
-	        		Hi <span th:text="${#authentication.name}"></span>
-	    		</div>
-            </div>
+            <div th:replace="header :: header" class="col_12 navbar">Templated... look at header.html</div>
             <div class="content"  id="slides-list">
                 <div class="page-header">
                     <h3>Your Presentations</h3>

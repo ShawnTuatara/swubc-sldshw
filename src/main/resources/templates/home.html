@@ -13,23 +13,7 @@
 <body id="home">
 <div class="container">
     <div class="grid flex">
-        <div th:replace="header :: header" class="col_12 navbar">
-            <div class="pull-left"><a href="/home.html" th:href="@{/}" id="logo"></a></div>
-            <div id="loginSection">
-	            <div sec:authorize="isAuthenticated()" class="loggedIn" th:class="''">
-	        		Welcome <a href="/slides-list.html" th:href="@{/slides-list}" th:text="${#authentication.name}">Anon</a><br />
-	        		<button id="logout" class="blue small" type="button"><a href="/logout.html" th:href="@{/logout}">Logout</a></button>
-	    		</div>
-	    		<div sec:authorize="isAnonymous()" class="anonymous">
-		            <!-- Menu Horizontal -->
-		            <form id="signin-form" class="pull-right" th:action="@{/login}" method="POST">
-		                <input type="text" name="username" placeholder="Email" />
-		                <input type="text" name="password" placeholder="Password" />
-		                <button id="loginSignIn" class="blue small" type="button">Sign in</button>
-		            </form>
-	    		</div>
-            </div>
-        </div>
+        <div th:replace="header :: header" class="col_12 navbar">Templated... look at header.html</div>
         <div class="content center">
             <div class="col_12">
                 <h5>Something Awesome about us!</h5>

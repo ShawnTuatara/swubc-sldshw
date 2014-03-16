@@ -11,4 +11,5 @@ public class PageAnnotation {
 	private Boolean heart;
 	private Boolean question;
 	private List<String> comments = new ArrayList<String>();
+	private String vote;
 }

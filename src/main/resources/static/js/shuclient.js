@@ -15,6 +15,11 @@ $(document).ready(function(){
         stompClient.connect({}, function(frame) {
             setConnected(true);
             console.log('Connected: ' + frame);
+            stompClient.subscribe('/topic/presentation/1/page/1', function(pagenum){
+            	console.log('received: ' + pagenum);
+            	document.getElementById('results').innerHTML = pagenum.body;
+            });
+            
             
             stompClient.subscribe('/topic/presentation/1/page', function(pagenum){
             	console.log('received: ' + pagenum);

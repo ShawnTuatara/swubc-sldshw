@@ -1,11 +1,11 @@
 package com.startupweekend.ubc.sldshw.messaging;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -15,7 +15,8 @@ import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 
 import com.startupweekend.ubc.sldshw.datamodel.PageAnnotation;
-import com.startupweekend.ubc.sldshw.datamodel.Response;
+import com.startupweekend.ubc.sldshw.datamodel.StatsSummaries;
+import com.startupweekend.ubc.sldshw.datamodel.SlideMeta;
 import com.startupweekend.ubc.sldshw.datamodel.Stats;
 
 @Controller
@@ -36,20 +37,40 @@ public class MessagingController {
 	private Map<String, Map<String, Stats>> presentationPageStats = new HashMap<String, Map<String, Stats>>();
 
 	@MessageMapping("/presentation/{id}/page")
-	public String updatePageId(
+	public SlideMeta updatePage(
 			@DestinationVariable("id") String presentationId,
-			String pageId) {
-		System.out.println("updatePageId - presentationId: " + presentationId + ", pageId: " + pageId);
+			SlideMeta slide) {
+		System.out.println("updatePageId - presentationId: " + presentationId + ", slide: " + slide);
 		synchronized(presentationPageLock) {
-			presentationPage.put(presentationId, pageId);
+			presentationPage.put(presentationId, slide.getPageId());
 		}
-		return pageId;
+		return slide;
 	}
 
 	@SubscribeMapping("/topic/presentation/{id}/page")
 	public String subscribeToUpdatePage(@DestinationVariable("id") String presentationId) {
 		System.out.println("subscribeToUpdatePage - presentationId: " + presentationId);
 		return presentationPage.get(presentationId);
+	}
+	
+	@SubscribeMapping("/topic/presentation/{id}/page/{pageId}")
+	public PageAnnotation subscribeToPage(
+			@DestinationVariable("id") String presentationId,
+			@DestinationVariable("pageId") String pageId,
+			@Header(SimpMessageHeaderAccessor.SESSION_ID_HEADER) String userId) {
+		System.out.println("subscribeToUpdatePage - presentationId: "
+				+ presentationId + ", pageId: " + pageId);
+		Map<String, Map<String, PageAnnotation>> presentationData = data
+				.get(presentationId);
+		PageAnnotation pageAnnotation = null;
+		if (presentationData != null) {
+			Map<String, PageAnnotation> existingAnnotations = presentationData
+					.get(userId);
+			if (existingAnnotations != null) {
+				pageAnnotation = existingAnnotations.get(pageId);
+			}
+		}
+		return pageAnnotation;
 	}
 	
 	@MessageMapping("/presentation/{id}/page/{pageId}")
@@ -125,37 +146,49 @@ public class MessagingController {
 		return summary;
 	}
 	
+	/*
+	 * Response with 
+	 * - a list of stats ordered by heart count + question count, limit 5.
+	 * - a single Stats with heart count, question count, comment count of the user
+	 */
 	@MessageMapping("/presentation/{id}/summary")
 	//@SendToUser
-	public Response getSummary(
+	public StatsSummaries getSummary(
 			@DestinationVariable("id") String presentationId,
 			@Header(SimpMessageHeaderAccessor.SESSION_ID_HEADER) String userId,
 			String email) {
 		System.out.println("summary - presentationId: " + presentationId + ", userId: " + userId);
-		
-		if (userSessionMappingHack.containsKey(email)) {
-			userId = userSessionMappingHack.get(email);
-		}
 
-		List<PageAnnotation> userAnnotations = new ArrayList<PageAnnotation>();
-		
 		Map<String, Map<String, PageAnnotation>> presentationData = data.get(presentationId);
 		if (presentationData == null) {
 			return null;
 		}
-		
-		Map<String, PageAnnotation> savedAnnotations = presentationData.get(userId);
-		if (savedAnnotations != null) {
-			userAnnotations.addAll(savedAnnotations.values());
+
+		if (userSessionMappingHack.containsKey(email)) {
+			userId = userSessionMappingHack.get(email);
 		}
 		
-		Map<String, Stats> pageStats = presentationPageStats.get(presentationId);
 		List<Stats> stats = null;
+		Map<String, Stats> pageStats = presentationPageStats.get(presentationId);
 		if (pageStats != null) {
 			stats = new ArrayList<Stats>(pageStats.size());
 			stats.addAll(pageStats.values());
+
+			Collections.sort(stats);
+			if (stats.size() > 5) {
+				stats = stats.subList(0, 5);
+			}
 		}
-		Response response = new Response(userAnnotations, stats);
+		
+		Stats userStats = new Stats("special");
+		Map<String, PageAnnotation> savedAnnotations = presentationData.get(userId);
+		if (savedAnnotations != null) {
+			for (PageAnnotation annotation : savedAnnotations.values()) {
+				userStats.collect(annotation);
+			}
+		}
+		
+		StatsSummaries response = new StatsSummaries(stats, userStats);
 		System.out.println("result: " + response);
 		return response;
 	}

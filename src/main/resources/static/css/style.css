@@ -86,6 +86,9 @@ body{
 #signin-form{
     display: inline-block;
 }
+.loggedIn{
+	display: none;
+}
 .navbar{
     margin-top: 0;
 }

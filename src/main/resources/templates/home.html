@@ -15,12 +15,13 @@
     <div class="grid flex">
         <div class="col_12 navbar">
             <div class="pull-left" id="logo"></div>
-            <div id="loginSection">
-	            <div sec:authorize="isAuthenticated()">
-	        		Welcome <span th:text="${#authentication.name}"></span>
+            <div th:replace="login :: loginForm" id="loginSection">
+	            <div sec:authorize="isAuthenticated()" class="loggedIn" th:class="''">
+	        		Welcome <a href="/slides-list.html" th:href="@{/slides-list}" th:text="${#authentication.name}">Anon</a><br />
+	        		<a href="/logout.html" th:href="@{/logout}">Logout</a>
 	    		</div>
-	    		<div sec:authorize="isAnonymous()">
-		            <!-- Menu Horiz ontal -->
+	    		<div sec:authorize="isAnonymous()" class="anonymous">
+		            <!-- Menu Horizontal -->
 		            <form id="signin-form" class="pull-right" th:action="@{/login}" method="POST">
 		                <input type="text" name="username" placeholder="Email" />
 		                <input type="text" name="password" placeholder="Password" />
@@ -35,7 +36,7 @@
             </div>
             <div class="col_6">
                 <h5>Join a presentation</h5>
-                <button type="button" class="medium orange">Join a presentation</button>
+                <a href="mobile.html" th:href="@{/mobile}"><button type="button" class="medium orange">Join a presentation</button></a>
             </div>
             <div class="col_6">
                 <h5>Create your first presentation</h5>

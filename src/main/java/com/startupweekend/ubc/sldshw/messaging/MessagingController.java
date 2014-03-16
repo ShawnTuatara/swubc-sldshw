@@ -9,6 +9,7 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 
 import com.startupweekend.ubc.sldshw.datamodel.PageAnnotation;
@@ -19,18 +20,29 @@ import com.startupweekend.ubc.sldshw.datamodel.Stats;
 public class MessagingController {
 	
 	private final Object lock = new Object();
+	private final Object presentationPageLock = new Object();
 	
 	/** Maps presentation -> user -> pageId -> annotations. */
 	private Map<String, Map<String, Map<String, PageAnnotation>>> data
 		= new HashMap<String, Map<String, Map<String, PageAnnotation>>>();
 	private Map<String, String> userSessionMappingHack = new HashMap<String, String>();
+	private Map<String, String> presentationPage = new HashMap<String, String>();
 
 	@MessageMapping("/presentation/{id}/page")
 	public String updatePageId(
 			@DestinationVariable("id") String presentationId,
 			String pageId) {
 		System.out.println("updatePageId - presentationId: " + presentationId + ", pageId: " + pageId);
+		synchronized(presentationPageLock) {
+			presentationPage.put(presentationId, pageId);
+		}
 		return pageId;
+	}
+	
+	@SubscribeMapping("/topic/presentation/{id}/page")
+	public String subscribeToUpdatePage(@DestinationVariable("id") String presentationId) {
+		System.out.println("subscribeToUpdatePage - presentationId: " + presentationId);
+		return presentationPage.get(presentationId);
 	}
 	
 	@MessageMapping("/presentation/{id}")

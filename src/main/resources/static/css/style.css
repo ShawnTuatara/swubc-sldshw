@@ -98,10 +98,18 @@ body{
     display: inline-block;
 }
 .loggedIn{
-	display: none;
+	/*display: none;*/
+}
+.anonymous{
+    display: none;
 }
 .navbar{
     margin-top: 0;
+}
+a{
+    display: inline-block;
+    text-decoration: none;
+    color: #ffffff;
 }
 /*---------------------------------
 	BUTTONS

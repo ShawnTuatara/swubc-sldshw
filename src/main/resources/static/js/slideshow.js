@@ -1,60 +1,70 @@
-function Client(){ 
-    
-    function connect() {
-        var socket = new SockJS('/socket');
-        stompClient = Stomp.over(socket);
-        stompClient.connect({}, function(frame) {
-            setConnected(true);
-            console.log('Connected: ' + frame);
+var get_page_id = function (){
+    page = {'v': Reveal.getIndices().v,
+            'h': Reveal.getIndices().h,
+            'f': Reveal.getIndices().f || 0};
             
-            stompClient.subscribe('/topic/presentation/1/page', function(pagenum){
-            	console.log('received: ' + pagenum);
-            	document.getElementById('results').innerHTML = pagenum.body;
-            });
-            
-            stompClient.subscribe('/topic/presentation/1/summary', function(results){
-            	console.log('received: ' + results);
-            	document.getElementById('results').innerHTML = results.body;
-            });
-            
-        });}
-    
-    function send() {
-    	 stompClient.send(document.getElementById('path').value, {}, document.getElementById('data').value);
-    }
-    $('#send').click(send);
-    
-    function sendComment() {
-        stompClient.send("/comment", {}, JSON.stringify({ 'body': "This is through sockets" }));
-        }
-    $('#sendName').click(sendComment);
-    connect();
+    page_id = "".concat(Reveal.getIndices().v, ":", Reveal.getIndices().h);
+    return page_id;}
 
+function Client(pres_id){ 
+    
+    var pres_id = pres_id
     
     $('h1').click(function(data){
-        console.log(this.text());
+        
         /*
         stompClient.send("/", {}, JSON.stringify({ 'body': page }));
         */
+        
     });
-
     
+    /* endpoints */
+    var ep = "".concat("/presentation/", pres_id)
+    var ep_page = "".concat(ep, "/page")
+    var ep_summary = "".concat(ep, "/page")
+    var topic_ep_page = "".concat('/topic', ep_page)
+    var topic_ep_summary = "".concat('/topic', ep_summary)
+
     /*
     initialize host and establish subscriptions
     */
-    
-    var recieve_broadcast = function (data){console.log(data)};
-    var recieve_data = function(data){console.log(data)};
+       
+    var recieve_id = function (data){console.log(data)};
+    var recieve_id_page = function(data){
+        console.log("page")
+        console.log(data);};
+        
+    var recieve_topic_id_page = function (data){console.log(data)};
+    var recieve_id_summary = function(data){console.log(data)};
+    var recieve_topic_id_summary = function (data){console.log(data)};
     
     var do_subscriptions = function(){
     
-        stompClient.subscribe('/broadcast', recieve_broadcast);
-        stompClient.subscribe('/', recieve_data);
+        stompClient.subscribe(ep, recieve_id );
+        stompClient.subscribe(ep_page, recieve_id_page );
+        stompClient.subscribe(ep_summary, recieve_id_summary);
+        stompClient.subscribe(topic_ep_page, recieve_topic_id_page );
+        stompClient.subscribe(topic_ep_summary, recieve_topic_id_summary);
+        
     }
     
     var socket = new SockJS('/socket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, do_subscriptions);
+    
+    
+    $('#Heart').click(function () {
+        stompClient.send(ep, {}, { pageannotation: {heart: true, pageId: get_page_id()} });
+    });
+    
+    $('#Comment').click(function () {
+        stompClient.send(ep, {}, { pageannotation: {question: true, pageId: get_page_id()} });
+    });
+    
+    $('#Question').click(function () 
+    {
+        stompClient.send(ep, {}, { pageannotation: {comment: true, pageId: get_page_id()} });
+    });
     
 }
 
@@ -99,3 +109,5 @@ function Host(){
     stompClient.connect({}, do_subscriptions);
 
 }
+
+c = Client(1);

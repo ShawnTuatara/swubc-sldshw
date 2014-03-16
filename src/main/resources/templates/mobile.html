@@ -15,7 +15,6 @@
     <div id="feedback" class="grid flex">
         <div class="col_12">
             <div class="pull-right" id="logo"></div>
-            <h2 id="pageId" th:text="''">2/12</h2>
         </div>
         <div class="content center">
             <div class="col_12">
@@ -30,8 +29,8 @@
     <div th:include="register :: content" id ="register" class="grid flex hidden"></div>
 </div>
 <div class="overlay overlay-hugeinc">
-    <p></p>
-    <button type="button" class="overlay-close">Close</button>
+    <textarea class="textarea"></textarea>
+    <button type="button" class="pull-right orange large">Submit</button>
 </div>
 </body>
 </html>

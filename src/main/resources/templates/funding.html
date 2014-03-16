@@ -1,0 +1,26 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <link rel="shortcut icon" href="../static/favicon.ico" th:href="@{/favicon.ico}" />
+	<link rel="icon" href="../static/favicon.ico" th:href="@{/favicon.ico}" />
+    <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}" media="all" /> <!-- KICKSTART -->
+    <script src="../static/js/jquery-2.1.0.min.js" th:src="@{/js/jquery-2.1.0.min.js}" ></script>
+    <script src="../static/js/slideshow.js" th:src="@{/js/slideshow.js}"></script>
+    <title>Account</title>
+</head>
+<body id="home">
+	<div class="container">
+		<div class="grid flex">
+			<div th:replace="header :: header" class="col_12 navbar">Templated...
+				look at header.html</div>
+			<div class="content center">
+				<div style="width: 200px; height: 200px;" class="Center" id="logo"></div>
+				<div class="col_12">
+					<h1>More funding</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

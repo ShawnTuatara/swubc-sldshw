@@ -5,36 +5,42 @@
 	height: 100%;
 	top: 0;
 	left: 0;
-	background: #ff0000;
+	background: #353438;
 }
 
 /* Overlay closing cross */
 .overlay .overlay-close {
-	width: 80px;
-	height: 80px;
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    font-size: 4em;
 	position: absolute;
 	right: 20px;
 	top: 20px;
-	overflow: hidden;
-	border: none;
-	background: url(../img/cross.png) no-repeat center center;
+	/*overflow: hidden;*/
+	background: #f5a01f;
 	text-indent: 200%;
-	color: transparent;
-	outline: none;
 	z-index: 100;
+    color: #ffffff;
+    cursor: pointer;
 }
 
 /* Effects */
 .overlay-hugeinc {
-	opacity: 0;
+	opacity: .95;
 	/*visibility: hidden;*/
 	-webkit-transition: opacity 0.5s, visibility 0s 0.5s;
 	transition: opacity 0.5s, visibility 0s 0.5s;
 }
 
 .overlay-hugeinc.open {
-	opacity: 1;
+	opacity: .97;
 	visibility: visible;
 	-webkit-transition: opacity 0.5s;
 	transition: opacity 0.5s;
+}
+.textarea{
+    font-size: 4em;
+    width: 100%;
+    height: 80%;
 }

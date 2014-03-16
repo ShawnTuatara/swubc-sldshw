@@ -1,3 +1,5 @@
+var lastPage = 12
+
 function Client(pres_id){ 
     
     var pres_id = pres_id;
@@ -30,12 +32,16 @@ function Client(pres_id){
         
         pageId = data.pageId;
         pageTitle = data.title;
+        console.log(data)
         
         $("#pageTitle").text(pageTitle);
-        $("#pageId").text(pageId)
-        
-        console.log(pageId)
-        if (pageId==2){
+ 
+        if ($("#feedback").hasClass("hidden")){
+            $("#feedback").removeClass('hidden');
+            $("#register").addClass('hidden');
+        }
+ 
+        if (pageId==lastPage){
             $("#feedback").addClass('hidden');
             $("#register").removeClass('hidden');
             var superhackendpoint = "".concat(ep_summary, Math.random());
@@ -49,6 +55,8 @@ function Client(pres_id){
             stompClient.send(superhackendpoint, {}, 'null');
         }
         
+
+        
         var topic_ep_page_id = "".concat(topic_ep_page, pageId)
         
         stompClient.subscribe(topic_ep_page_id, recieve_page_annotations);
@@ -61,6 +69,7 @@ function Client(pres_id){
     
     var recieve_topic_id_summary = function (data){
         console.log(data)
+        
         }
     
     var init = function(){
@@ -225,3 +234,7 @@ function Host(pres_id){
     stompClient.connect({}, init);
 
 }
+
+$(document).ready(function() {
+	 $('#loginSignIn').click(function() {$(this).parent().submit();});
+ });

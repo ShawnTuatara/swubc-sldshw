@@ -8,17 +8,19 @@
 <body>
 	<div th:if="${param.error}">Invalid username and password.</div>
 	<div th:if="${param.logout}">You have been logged out.</div>
-	<div th id="loginSection">
-		<div sec:authorize="isAuthenticated()">
-			Welcome <span th:text="${#authentication.name}"></span>
+	<div th:fragment="loginForm" id="loginSection">
+		<div sec:authorize="isAuthenticated()" class="loggedIn" th:class="''">
+			Welcome <a href="/slides-list.html" th:href="@{/slides-list}"
+				th:text="${#authentication.name}">Anon</a><br /> <a
+				href="/logout.html" th:href="@{/logout}">Logout</a>
 		</div>
-		<div sec:authorize="isAnonymous()">
-			<!-- Menu Horiz ontal -->
+		<div sec:authorize="isAnonymous()" class="anonymous">
+			<!-- Menu Horizontal -->
 			<form id="signin-form" class="pull-right" th:action="@{/login}"
 				method="POST">
 				<input type="text" name="username" placeholder="Email" /> <input
 					type="text" name="password" placeholder="Password" />
-				<button id="loginSignIn" type="button" class="small">Sign
+				<button id="loginSignIn" class="blue small" type="button">Sign
 					in</button>
 			</form>
 		</div>

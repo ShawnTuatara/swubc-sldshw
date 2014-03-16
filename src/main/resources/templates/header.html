@@ -13,9 +13,9 @@
 <body id="home">
 <div class="container">
     <div class="grid flex">
-        <div th:replace="header :: header" class="col_12 navbar">
+        <div th:fragment="header" class="col_12 navbar">
             <div class="pull-left"><a href="/home.html" th:href="@{/}" id="logo"></a></div>
-            <div id="loginSection">
+            <div th:replace="login :: loginForm" id="loginSection">
 	            <div sec:authorize="isAuthenticated()" class="loggedIn" th:class="''">
 	        		Welcome <a href="/slides-list.html" th:href="@{/slides-list}" th:text="${#authentication.name}">Anon</a><br />
 	        		<button id="logout" class="blue small" type="button"><a href="/logout.html" th:href="@{/logout}">Logout</a></button>
@@ -28,19 +28,6 @@
 		                <button id="loginSignIn" class="blue small" type="button">Sign in</button>
 		            </form>
 	    		</div>
-            </div>
-        </div>
-        <div class="content center">
-            <div class="col_12">
-                <h5>Something Awesome about us!</h5>
-            </div>
-            <div class="col_6">
-                <h5>Join a presentation</h5>
-                <a href="mobile.html" th:href="@{/mobile}"><button type="button" class="medium orange">Join a presentation</button></a>
-            </div>
-            <div class="col_6">
-                <h5>Create your first presentation</h5>
-                <button type="button" class="blue medium">Create an account</button>
             </div>
         </div>
     </div>

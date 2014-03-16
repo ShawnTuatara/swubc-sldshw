@@ -31,6 +31,11 @@ $(document).ready(function(){
             	document.getElementById('results').innerHTML = results.body;
             });
             
+            stompClient.subscribe('/topic/presentation/1/relay', function(results){
+            	console.log('received: ' + results);
+            	document.getElementById('results').innerHTML = results.body;
+            });
+            
             stompClient.subscribe('/topic/allData', function(results){
             	console.log('received: ' + results);
             	document.getElementById('results').innerHTML = results.body;

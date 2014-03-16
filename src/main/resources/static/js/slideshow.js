@@ -1,10 +1,13 @@
-var get_page_id = function (){
+var get_pageID = function (){
 
     return "".concat(Reveal.getIndices().v, ",", Reveal.getIndices().h);}
+
+
 
 function Client(pres_id){ 
     
     var pres_id = pres_id
+    var pageID = null
     
     var header = {"username": null, "password": null};
       
@@ -14,13 +17,15 @@ function Client(pres_id){
     var ep_summary = "".concat(ep, "/summary")
     var topic_ep_page = "".concat('/topic', ep_page)
     var topic_ep_summary = "".concat('/topic', ep_summary)
-    
-    var set_page_id = function (data){$("#things").text(data);}
 
     /* initialize host and establish subscriptions */
     var recieve_id = function (data){console.log(data)};
     var recieve_id_page = function(data){$("#PageNum").text(data);}
-    var recieve_topic_id_page = function(data){$("#PageNum").text(data.body);}
+    var recieve_topic_id_page = function(data){
+        pageID = data.body
+        $("#PageID").text(pageID);
+        }
+    
     var recieve_id_summary = function(data){console.log(data)};
     var recieve_topic_id_summary = function (data){console.log(data)};
     
@@ -38,17 +43,65 @@ function Client(pres_id){
     stompClient = Stomp.over(socket);
     stompClient.connect({}, init);
     
-    $('#Heart').click(function () {
-        stompClient.send(ep, {}, JSON.stringify({ pageannotation: {heart: true, pageId: get_page_id()} }));
+    /* bind client functions */
+    
+    $(document).ready(function(){
+        $('#Heart').click(function () {
+            me = $(this)
+            
+            if (me.hasClass("pressed") == false){
+                me.addClass("pressed");
+                stompClient.send(ep, {}, JSON.stringify({ pageannotation: {heart: true, pageId: pageID} }));
+                }
+            else if (me.hasClass("pressed")){
+                me.removeClass("pressed");
+                stompClient.send(ep, {}, JSON.stringify({ pageannotation: {heart: false, pageId: pageID} }));
+                }
+                
+        });
+        
+        $('#Question').click(function () {
+            me = $(this)
+            
+            if (me.hasClass("pressed") == false){
+                me.addClass("pressed");
+                stompClient.send(ep, {}, JSON.stringify({ pageannotation: {question: true, pageId: pageID} }));
+                }
+            else if (me.hasClass("pressed")){
+                me.removeClass("pressed");
+                stompClient.send(ep, {}, JSON.stringify({ pageannotation: {question: false, pageId: pageID} }));
+                }
+                
+        });
+        
+        $('#Poll>.option').click(function () {
+                        
+            if (me.hasClass("pressed") == false){
+                me.addClass("pressed");
+                stompClient.send(ep, {}, JSON.stringify({ pageannotation: {question: true, pageId: pageID} }));
+                }
+            else if (me.hasClass("pressed")){
+                me.removeClass("pressed");
+                stompClient.send(ep, {}, JSON.stringify({ pageannotation: {question: false, pageId: pageID} }));
+                }
+                
+        });
+        
+        
     });
     
     $('#Comment').click(function () {
-        stompClient.send(ep, {}, JSON.stringify({ pageannotation: {question: true, pageId: get_page_id()} }));
+        stompClient.send(ep, {}, JSON.stringify({ pageannotation: {question: true, pageId: pageID} }));
     });
     
     $('#Question').click(function () 
     {
-        stompClient.send(ep, {}, JSON.stringify({ pageannotation: {comment: true, pageId: get_page_id()} }));
+        stompClient.send(ep, {}, JSON.stringify({ pageannotation: {comment: true, pageId: pageID} }));
+    });
+    
+    $('#Poll').click(function () 
+    {
+        stompClient.send(ep, {}, JSON.stringify({ pageannotation: {vote: "A"}}));
     });
     
     var register = function (data) {
@@ -79,7 +132,7 @@ function Host(pres_id){
             return page;
 
         }
-        var pageId = get_page_id();
+        var pageId = get_pageID();
         console.log(pageId);
         console.log(typeof pageId);
         stompClient.send(ep_page, {}, JSON.stringify(pageId));

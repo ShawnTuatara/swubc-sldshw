@@ -27,8 +27,8 @@
 
 /* Effects */
 .overlay-hugeinc {
-	opacity: 0;
-	visibility: hidden;
+	opacity: .95;
+	/*visibility: hidden;*/
 	-webkit-transition: opacity 0.5s, visibility 0s 0.5s;
 	transition: opacity 0.5s, visibility 0s 0.5s;
 }

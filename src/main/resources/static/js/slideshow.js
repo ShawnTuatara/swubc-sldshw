@@ -16,13 +16,14 @@ $(document).ready(function(){
             setConnected(true);
             console.log('Connected: ' + frame);
             
-            stompClient.subscribe('/topic/comments', function(greeting){
-                console.log(greeting);
-            });
-            
             stompClient.subscribe('/topic/presentation/1/page', function(pagenum){
             	console.log('received: ' + pagenum);
-            	document.getElementById('results').innerHTML = pagenum;
+            	document.getElementById('results').innerHTML = pagenum.body;
+            });
+            
+            stompClient.subscribe('/topic/presentation/1/summary', function(results){
+            	console.log('received: ' + results);
+            	document.getElementById('results').innerHTML = results.body;
             });
             
         });}

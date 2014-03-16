@@ -53,7 +53,7 @@ public class MessagingController {
 		return presentationPage.get(presentationId);
 	}
 	
-	@SubscribeMapping("/topic/presentation/{id}/page/{pageId}")
+	@SubscribeMapping("/topic/presentation/{id}/page/{pageId}/user")
 	public PageAnnotation subscribeToPage(
 			@DestinationVariable("id") String presentationId,
 			@DestinationVariable("pageId") String pageId,
@@ -71,6 +71,22 @@ public class MessagingController {
 			}
 		}
 		return pageAnnotation;
+	}
+	
+	@SubscribeMapping("/topic/presentation/{id}/page/{pageId}")
+	public Stats subscribeToPageUpdates(
+			@DestinationVariable("id") String presentationId,
+			@DestinationVariable("pageId") String pageId) {
+		System.out.println("subscribe to page updates: " + presentationId + ", " + pageId);
+		Map<String, Stats> pageStats = presentationPageStats.get(presentationId);
+		if (pageStats == null) {
+			return new Stats(pageId);
+		}
+		Stats stats = pageStats.get(pageId);
+		if (stats == null) {
+			return new Stats(pageId);
+		}
+		return stats;
 	}
 	
 	@MessageMapping("/presentation/{id}/page/{pageId}")

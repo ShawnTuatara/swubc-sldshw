@@ -1,7 +1,7 @@
 function Client(pres_id){ 
     
     var pres_id = pres_id;
-    var pageID = null;
+    var pageId = null;
     var pageTitle = null;
     
     var header = {"username": null, "password": null};
@@ -9,7 +9,7 @@ function Client(pres_id){
     /* endpoints */
     var ep = "".concat("/presentation/", pres_id)
     var ep_page = "".concat(ep, "/page")
-    /* var ep_page = "".concat(ep, "/page/", pageID) */
+    /* var ep_page = "".concat(ep, "/page/", pageId) */
     var ep_summary = "".concat(ep, "/summary")
     var topic_ep_page = "".concat('/topic', ep_page)
     var topic_ep_summary = "".concat('/topic', ep_summary)
@@ -40,7 +40,7 @@ function Client(pres_id){
             $("#register").removeClass('hidden')
         }
         
-        var topic_ep_page_id = "".concat(topic_ep_page, pageID)
+        var topic_ep_page_id = "".concat(topic_ep_page, pageId)
         
         stompClient.subscribe(topic_ep_page_id, recieve_page_annotations);
         
@@ -76,11 +76,12 @@ function Client(pres_id){
             
             if (me.hasClass("active") == false){
                 me.addClass("active");
-                stompClient.send(ep, {}, JSON.stringify({ pageannotation: {heart: true, pageId: pageID} }));
+                
+                stompClient.send("".concat(ep_page, "/", pageId), {}, JSON.stringify({heart: true, pageId: pageId}));
                 }
             else if (me.hasClass("active")){
                 me.removeClass("active");
-                stompClient.send(ep, {}, JSON.stringify({ pageannotation: {heart: false, pageId: pageID} }));
+                stompClient.send("".concat(ep_page, "/", pageId), {}, JSON.stringify({heart: false, pageId: pageId}));
                 }
         });
         
@@ -89,11 +90,11 @@ function Client(pres_id){
             
             if (me.hasClass("active") == false){
                 me.addClass("active");
-                stompClient.send(ep, {}, JSON.stringify({ pageannotation: {question: true, pageId: pageID} }));
+                stompClient.send("".concat(ep_page, "/", pageId), {}, JSON.stringify( {question: true, pageId: pageId} ));
                 }
             else if (me.hasClass("active")){
                 me.removeClass("active");
-                stompClient.send(ep, {}, JSON.stringify({ pageannotation: {question: false, pageId: pageID} }));
+                stompClient.send("".concat(ep_page, "/", pageId), {}, JSON.stringify({question: false, pageId: pageId}));
                 }
         });
         
@@ -105,12 +106,12 @@ function Client(pres_id){
             
             if (me.hasClass("active")){
                 me.removeClass("active")
-                stompClient.send(ep, {}, JSON.stringify({ pageannotation: {vote: null, pageId: pageID} }));
+                stompClient.send("".concat(ep_page, "/", pageId), {}, JSON.stringify({vote: null, pageId: pageId}));
                 }
                 
             else {
                 me.addClass("active")
-                stompClient.send(ep, {}, JSON.stringify({ pageannotation: {vote: me.data("option"), pageId: pageID} }));
+                stompClient.send("".concat(ep_page, "/", pageId), {}, JSON.stringify({vote: me.data("option"), pageId: pageId}));
                 
                 }
             });
@@ -130,7 +131,7 @@ function Client(pres_id){
             
         $("#noteSubmit").click(function(){
             console.log($("#note").val());
-            stompClient.send(ep, {}, JSON.stringify({ pageannotation: {comment: $("#note").val(), pageId: pageID} }));
+            stompClient.send(ep, {}, JSON.stringify({ pageannotation: {comment: $("#note").val(), "pageId": pageId} }));
             toggleInput();
         });
             
@@ -175,6 +176,8 @@ function Host(pres_id){
         console.log(get_pageData());
         stompClient.send(ep_page, {}, JSON.stringify(get_pageData()));
         /*stompClient.send(ep_relay, {}, JSON.stringify(packIndices()))*/
+    
+        stompClient.subscribe(topic_ep_page.concat("/").concat(page_id), stats_received);
     }
     
     Reveal.addEventListener("slidechanged", slidechanged);
@@ -183,6 +186,13 @@ function Host(pres_id){
     
     var data_recieved = function(data) {
         console.log(data);
+    }
+    
+    var stats_received = function(data) {
+    	data = JSON.parse(data.body);
+    	console.log("stats received: ", data);
+    	document.getElementById("heartCount").innerHTML = data.heartCount;
+    	document.getElementById("questionCount").innerHTML = data.questionCount;
     }
 
     var go_to_slide = function(data){

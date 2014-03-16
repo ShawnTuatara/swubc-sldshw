@@ -43,7 +43,16 @@ function Client(pres_id){
  
         if (pageId==lastPage){
             $("#feedback").addClass('hidden');
-            $("#register").removeClass('hidden')
+            $("#register").removeClass('hidden');
+            var superhackendpoint = "".concat(ep_summary, Math.random());
+            stompClient.subscribe("".concat("/topic", superhackendpoint), function(data) {
+            	data = JSON.parse(data.body);
+            	console.log("fuck1", data);
+            	document.getElementById("userHeartCount").innerHTML = data.userStats.heartCount;
+            	document.getElementById("userQuestionCount").innerHTML = data.userStats.questionCount;
+            	console.log("fuck yeah", data);
+            })
+            stompClient.send(superhackendpoint, {}, 'null');
         }
         
 
@@ -56,7 +65,7 @@ function Client(pres_id){
     
     var recieve_id_summary = function(data){
         console.log(data)
-        }
+    }
     
     var recieve_topic_id_summary = function (data){
         console.log(data)

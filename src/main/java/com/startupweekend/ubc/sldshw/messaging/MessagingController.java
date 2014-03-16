@@ -12,6 +12,7 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -174,7 +175,7 @@ public class MessagingController {
 	 * - a list of stats ordered by heart count + question count, limit 5.
 	 * - a single Stats with heart count, question count, comment count of the user
 	 */
-	@MessageMapping("/presentation/{id}/summary")
+	@MessageMapping("/presentation/{id}/summary*")
 	//@SendToUser
 	public StatsSummaries getSummary(
 			@DestinationVariable("id") String presentationId,
@@ -184,7 +185,7 @@ public class MessagingController {
 
 		Map<String, Map<String, PageAnnotation>> presentationData = data.get(presentationId);
 		if (presentationData == null) {
-			return null;
+			return new StatsSummaries(null, null);
 		}
 
 		if (userSessionMappingHack.containsKey(email)) {

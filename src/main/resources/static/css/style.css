@@ -80,11 +80,11 @@ body{
     position: relative;
 }
 .mobile .heart, .mobile .question, .mobile .notes{
-    width: 100px;
-    height: 100px;
+    width: 300px;
+    height: 300px;
 }
 .mobile .question{
-    margin: 0 25px;
+    /*margin: 0 25px;*/
 }
 #home .content{
     margin-top: 30px;
@@ -101,6 +101,9 @@ body{
     display: inline-block;
 }
 .loggedIn{
+	display: none;
+}
+.hidden{
 	display: none;
 }
 /* .anonymous{
@@ -377,6 +380,7 @@ label.inline{
 }
 input{
     color: #ffffff;
+    font-size: 40px;
     display:inline-block;
     *display:inline;
     vertical-align: middle;
@@ -541,7 +545,7 @@ button.medium{
 }
 .heart{
     cursor: pointer;
-    display: inline-block;
+    /*display: inline-block;*/
     margin-top: 15px;
     margin-left: 4px;
     width: 70px;
@@ -553,7 +557,7 @@ button.medium{
 }
 .question{
     cursor: pointer;
-    display: inline-block;
+    /*display: inline-block;*/
     width: 70px;
     height: 70px;
     background: url("../img/question-white.svg") no-repeat;
@@ -563,7 +567,7 @@ button.medium{
 }
 .notes, .notes.active{
     cursor: pointer;
-    display: inline-block;
+    /*display: inline-block;*/
     width: 70px;
     height: 70px;
     background: url("../img/notes-white.svg") no-repeat;
@@ -573,6 +577,7 @@ button.medium{
 }
 .question, .heart, .notes{
     z-index: 1000;
+    margin: 30px auto;
 }
 .header-background{
     z-index: -1;
@@ -584,13 +589,6 @@ button.medium{
     background-color: #4f4d65;
 }
 
-.actions{
-    position: relative;
-    /*width: 100%;*/
-    height: 100px;
-    /*background-color: #ffffff;*/
-    /*opacity: .3;*/
-}
 .footer-mobile{
     margin-top: 50px;
 }

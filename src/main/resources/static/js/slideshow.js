@@ -8,20 +8,31 @@ function Client(pres_id){
     /* endpoints */
     var ep = "".concat("/presentation/", pres_id)
     var ep_page = "".concat(ep, "/page")
+    /* var ep_page = "".concat(ep, "/page/", pageID) */
     var ep_summary = "".concat(ep, "/summary")
     var topic_ep_page = "".concat('/topic', ep_page)
     var topic_ep_summary = "".concat('/topic', ep_summary)
 
     /* initialize host and establish subscriptions */
     var recieve_id = function (data){console.log(data)};
-    var recieve_id_page = function(data){$("#PageNum").text(data);}
+    
+    var recieve_id_page = function(data){
+        $("#PageNum").text(data);}
+    
     var recieve_topic_id_page = function(data){
-        pageID = data.body
-        $("#PageID").text(pageID);
+        console.log(data);
+        pageID = data;
+        
+        $("h3").text("test title");
         }
     
-    var recieve_id_summary = function(data){console.log(data)};
-    var recieve_topic_id_summary = function (data){console.log(data)};
+    var recieve_id_summary = function(data){
+        console.log(data)
+        }
+    
+    var recieve_topic_id_summary = function (data){
+        console.log(data)
+        }
     
     var init = function(){
     
@@ -40,46 +51,44 @@ function Client(pres_id){
     /* bind client functions */
     
     $(document).ready(function(){
-        $('#Heart').click(function () {
+        $('#heart').click(function () {
             me = $(this)
             
-            if (me.hasClass("pressed") == false){
-                me.addClass("pressed");
+            if (me.hasClass("active") == false){
+                me.addClass("active");
                 stompClient.send(ep, {}, JSON.stringify({ pageannotation: {heart: true, pageId: pageID} }));
                 }
-            else if (me.hasClass("pressed")){
-                me.removeClass("pressed");
+            else if (me.hasClass("active")){
+                me.removeClass("active");
                 stompClient.send(ep, {}, JSON.stringify({ pageannotation: {heart: false, pageId: pageID} }));
                 }
-                
         });
         
-        $('#Question').click(function () {
+        $('#question').click(function () {
             me = $(this)
             
-            if (me.hasClass("pressed") == false){
-                me.addClass("pressed");
+            if (me.hasClass("active") == false){
+                me.addClass("active");
                 stompClient.send(ep, {}, JSON.stringify({ pageannotation: {question: true, pageId: pageID} }));
                 }
-            else if (me.hasClass("pressed")){
-                me.removeClass("pressed");
+            else if (me.hasClass("active")){
+                me.removeClass("active");
                 stompClient.send(ep, {}, JSON.stringify({ pageannotation: {question: false, pageId: pageID} }));
                 }
-                
         });
         
-        $('#Poll>.option').click(function () {
+        $('#poll>.option').click(function () {
             
             var me = $(this);        
             var others = $('#Poll>.option').not($(this));
-            others.removeClass("pressed")
+            others.removeClass("active")
             
-            if (me.hasClass("pressed")){
-                me.removeClass("pressed")
+            if (me.hasClass("active")){
+                me.removeClass("active")
                 stompClient.send(ep, {}, JSON.stringify({ pageannotation: {vote: null, pageId: pageID} }));
                 }
             else {
-                me.addClass("pressed")
+                me.addClass("active")
                 stompClient.send(ep, {}, JSON.stringify({ pageannotation: {vote: me.data("option"), pageId: pageID} }));
                 
                 }
@@ -101,9 +110,9 @@ function Host(pres_id){
     
     /* endpoints */
     var ep = "".concat("/presentation/", pres_id)
-    var ep_hosts = "".concat(ep, "/hosts")
     var ep_page = "".concat(ep, "/page")
     var ep_summary = "".concat(ep, "/summary")
+    var ep_relay = "".concat(ep, "/summary")
     var topic_ep_page = "".concat('/topic', ep_page)
     var topic_ep_summary = "".concat('/topic', ep_summary)
 
@@ -119,15 +128,13 @@ function Host(pres_id){
             return page;
         }
         
-        var pageId = get_pageID();
-        stompClient.send(ep_page, {}, JSON.stringify(pageId));
-        stompClient.send(ep_hosts, {}, JSON.stringify(packIndices()));
+        var get_pageID = function (){
+            return "".concat(Reveal.getIndices().v, ",", Reveal.getIndices().h);
+            }
+        
+        stompClient.send(ep_page, {}, JSON.stringify(get_pageID()));
+        stompClient.send(ep_relay, {}, JSON.stringify(packIndices()))
     }
-    
-    var get_pageID = function (){
-
-        return "".concat(Reveal.getIndices().v, ",", Reveal.getIndices().h);
-        }
     
     Reveal.addEventListener("slidechanged", slidechanged);
     
@@ -137,16 +144,17 @@ function Host(pres_id){
         console.log(data);
     }
 
-    var remote_hosts = function(data){
+    var go_to_slide = function(data){
         Reveal.slide(data.v, data.h, data.f);
         }
-    
+
     /* initialize host and establish subscriptions */
     
     var init = function(){
         stompClient.subscribe(ep, data_recieved);
         stompClient.subscribe(ep_page, data_recieved);
-        stompClient.subscribe(ep_hosts, remote_hosts);
+        stompClient.subscribe(ep_relay, go_to_slide);
+
     }
     
     var socket = new SockJS('/socket');

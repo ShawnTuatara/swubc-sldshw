@@ -1,9 +1,3 @@
-var get_pageID = function (){
-
-    return "".concat(Reveal.getIndices().v, ",", Reveal.getIndices().h);}
-
-
-
 function Client(pres_id){ 
     
     var pres_id = pres_id
@@ -75,33 +69,25 @@ function Client(pres_id){
         });
         
         $('#Poll>.option').click(function () {
-                        
-            if (me.hasClass("pressed") == false){
-                me.addClass("pressed");
-                stompClient.send(ep, {}, JSON.stringify({ pageannotation: {question: true, pageId: pageID} }));
+            
+            var me = $(this);        
+            var others = $('#Poll>.option').not($(this));
+            others.removeClass("pressed")
+            
+            if (me.hasClass("pressed")){
+                me.removeClass("pressed")
+                stompClient.send(ep, {}, JSON.stringify({ pageannotation: {vote: null, pageId: pageID} }));
                 }
-            else if (me.hasClass("pressed")){
-                me.removeClass("pressed");
-                stompClient.send(ep, {}, JSON.stringify({ pageannotation: {question: false, pageId: pageID} }));
-                }
+            else {
+                me.addClass("pressed")
+                stompClient.send(ep, {}, JSON.stringify({ pageannotation: {vote: me.data("option"), pageId: pageID} }));
                 
-        });
-        
-        
+                }
+            });
     });
     
     $('#Comment').click(function () {
         stompClient.send(ep, {}, JSON.stringify({ pageannotation: {question: true, pageId: pageID} }));
-    });
-    
-    $('#Question').click(function () 
-    {
-        stompClient.send(ep, {}, JSON.stringify({ pageannotation: {comment: true, pageId: pageID} }));
-    });
-    
-    $('#Poll').click(function () 
-    {
-        stompClient.send(ep, {}, JSON.stringify({ pageannotation: {vote: "A"}}));
     });
     
     var register = function (data) {
@@ -115,6 +101,7 @@ function Host(pres_id){
     
     /* endpoints */
     var ep = "".concat("/presentation/", pres_id)
+    var ep_hosts = "".concat(ep, "/hosts")
     var ep_page = "".concat(ep, "/page")
     var ep_summary = "".concat(ep, "/summary")
     var topic_ep_page = "".concat('/topic', ep_page)
@@ -130,28 +117,36 @@ function Host(pres_id){
                     'f': Reveal.getIndices().f || 0};
                     
             return page;
-
         }
+        
         var pageId = get_pageID();
-        console.log(pageId);
-        console.log(typeof pageId);
         stompClient.send(ep_page, {}, JSON.stringify(pageId));
+        stompClient.send(ep_hosts, {}, JSON.stringify(packIndices()));
     }
+    
+    var get_pageID = function (){
+
+        return "".concat(Reveal.getIndices().v, ",", Reveal.getIndices().h);
+        }
     
     Reveal.addEventListener("slidechanged", slidechanged);
     
     /* incoming data processing */
     
     var data_recieved = function(data) {
-        console.log("host received data")
         console.log(data);
     }
 
+    var remote_hosts = function(data){
+        Reveal.slide(data.v, data.h, data.f);
+        }
+    
     /* initialize host and establish subscriptions */
     
     var init = function(){
         stompClient.subscribe(ep, data_recieved);
         stompClient.subscribe(ep_page, data_recieved);
+        stompClient.subscribe(ep_hosts, remote_hosts);
     }
     
     var socket = new SockJS('/socket');

@@ -1,0 +1,423 @@
+/*---------------------------------
+	UTILITY
+-----------------------------------*/
+@import url(fonts/Lato/Lato-Regular.css);
+/*---------------------------------
+	UTILITY
+-----------------------------------*/
+.center{text-align:center;}
+.left{text-align:left;}
+.right{text-align:right;}
+/*---------------------------------
+	HEADINGS
+-----------------------------------*/
+body{
+    font-family: 'Lato', Calibri, Arial, sans-serif;
+    margin: 0;
+}
+/*---------------------------------
+	HEADINGS
+-----------------------------------*/
+h1,h2,h3,h4,h5,h6{
+    font-weight:bold;
+    line-height:140%;
+}
+
+h1{
+    font-size:3.5em;
+    margin:10px 0 10px 0;
+}
+
+h2{
+    font-size:3em;
+    margin:10px 0 10px 0;
+}
+
+h3{
+    font-size:2.5em;
+    margin:10px 0 10px 0;
+    line-height:130%;
+}
+
+h4{
+    font-size:2em;
+    margin:10px 0 10px 0;
+}
+
+h5{
+    font-size:1.5em;
+    margin:10px 0 10px 0;
+}
+
+h6{
+    font-size:1.2em;
+    margin:10px 0 5px 0;
+}
+/*---------------------------------
+	PARAGRAPHS
+-----------------------------------*/
+p{
+    margin:10px 0;
+}
+.container{
+    width: 1170px;
+    margin: 0 auto;
+}
+body{
+    /*background-color: #4e4d64;*/
+    background-color: #e1e2e3;
+    color: #353438;
+}
+#home{
+    color: #ffffff;
+}
+#logo{
+    position: relative;
+    top: -18px;
+    display: inline-block;
+    width: 75px;
+    height: 70px;
+    background: url("../img/logo.svg");
+}
+#signin-form{
+    display: inline-block;
+}
+.navbar{
+    margin-top: 0;
+}
+/*---------------------------------
+	BUTTONS
+-----------------------------------*/
+button {
+    position:relative;
+    top:0;
+    left:0;
+    vertical-align: middle;
+    margin:0;
+    padding:10px 15px;
+    line-height:100%;
+    -moz-border-radius:2px;
+    -webkit-border-radius:2px;
+    border-radius:2px;
+    cursor: pointer;
+    width:auto;
+    overflow:visible;
+    font-weight:normal;
+    font-size:14px; /*Pixels for consistancy*/
+    background: #41ab8d;
+    color:#ffffff;
+    text-decoration:none;
+    vertical-align: middle;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    display:inline-block;
+    *display:inline;/*IE ONLY*/
+    zoom:1;
+    border: none;
+}
+button:active{background: #25a180;}
+button:hover{background: #25a180;}
+button.orange, button.orange:active
+{
+    background: #f5a01f;
+}
+/*---------------------------------
+	COLUMN SIZES
+-----------------------------------*/
+/* sizes */
+input[class*="col_"],
+select[class*="col_"],
+label[class*="col_"]{
+    float:none;display:inline-block;*display:inline;margin-bottom:0;
+    *margin-left: 0.5%;*margin-right: 0.5%;/* this is for IE 7 Only and is not a good fix - work needed here */
+}
+
+/*---------------------------------
+	FORMS
+-----------------------------------*/
+form{
+    padding:0;
+    margin:0;
+}
+
+form.vertical label{display:block;}
+form.vertical input,
+form.vertical select,
+form.vertical textarea{width:100%;display:block;margin-bottom:10px;}
+form.vertical .chzn-container{display:block;margin-bottom:10px;}
+form.vertical .chzn-choices{display:block;margin-bottom:10px;}
+
+/* radios & checks */
+form.vertical input.checkbox,
+form.vertical input[type="checkbox"],
+form.vertical input.radio,
+form.vertical input[type="radio"],
+form.vertical label.inline{display:inline;width:auto;margin:0;}
+label{
+    display:inline-block;
+    *display:inline;
+    vertical-align: middle;
+    margin:0;
+    padding:0;
+    position:relative;
+    top:0;
+    left:0;
+    zoom:1;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+label.inline{
+    display:inline;
+    margin:0;
+}
+input{
+    display:inline-block;
+    *display:inline;
+    vertical-align: middle;
+    width:auto;
+    zoom:1;
+    margin:0;
+    border: 1px solid #626377;
+    font-size:1em;
+    padding:5px 0;
+    text-indent: 5px;
+    -moz-border-radius:2px;
+    -webkit-border-radius:2px;
+    border-radius:2px;
+    background:#626377;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+input::-webkit-input-placeholder,
+input:-moz-placeholder,
+.placeholder{
+    color:#bebbbd;
+}
+
+input::-moz-focus-inner {border:0;}
+
+input[disabled="disabled"], input.disabled{
+    color:#999;
+    background:#f5f5f5;
+    -moz-box-shadow:0 0 2px #3d3c47;
+    -webkit-box-shadow:0 1px 2px #3d3c47;
+    box-shadow:0 1px 2px #3d3c47;
+}
+
+/* FOCUS STATES */
+input[type="text"]:focus,
+textarea:focus,
+button:focus,
+a.button:focus,
+select:focus,
+input[type="file"]:focus,
+input[type="password"]:focus{
+    -webkit-box-shadow: 0 0 7px #3d3c47;
+    -moz-box-shadow   : 0 0 7px #3d3c47;
+    box-shadow        : 0 0 7px #3d3c47;
+    border: 1px solid #3d3c47;
+    outline: none;
+}
+
+/* TRANSITION */
+input[type="text"],
+textarea,
+button,
+a.button,
+a,
+input[type="file"]{
+    -moz-transition: -moz-box-shadow 0.5s, border 0.5s, background 0.5s;
+    -webkit-transition: -webkit-box-shadow 0.5s, border 0.5s, background 0.5s;
+    -o-transition:  box-shadow 0.5s, border 0.5s, background 0.5s;
+    transition: box-shadow 0.5s, border 0.5s, background 0.5s;
+}
+button.medium{
+    font-size:1.1em;padding:16px 20px;
+}
+/*---------------------------------
+	GRID/COLUMNS
+-----------------------------------
+	tinyfluidgrid.com
+	& girlfriendnyc.com
+	with changes by 99Lime
+-----------------------------------*/
+/*
+& Columns : 12
+& Gutter %: 20%
+& MaxWidth: 1280px
+*/
+
+.grid{
+    max-width:1220px;
+    margin:0 auto;
+    padding:0 2em;
+}
+
+.grid.flex{
+    width:100%;
+    max-width:100%;
+    padding:0 2%;
+    padding:2em;
+}
+
+.row{
+    display:block;
+    overflow:hidden;
+    clear:both;
+}
+
+*[class*="col_"].alpha{margin-left:0;}
+*[class*="col_"].omega{margin-right:0;}
+
+.col_1  { width: 6.6666666666667%; }
+.col_2  { width: 15%; }
+.col_3  { width: 23.333333333333%; }
+.col_4  { width: 31.666666666667%; }
+.col_5  { width: 40%; }
+.col_6  { width: 48.333333333333%; }
+.col_7  { width: 56.666666666667%; }
+.col_8  { width: 65%; }
+.col_9  { width: 73.333333333333%; }
+.col_10 { width: 81.666666666667%; }
+.col_11 { width: 90%; }
+.col_12 { width: 98.333333333333%; }
+
+*[class*="col_"]{
+    margin-left: 0.83333333333333%;
+    margin-right: 0.83333333333333%;
+    margin-top:0.5em;
+    margin-bottom:0.5em;
+    float: left;
+    display: block;
+}
+
+.grid img{
+    max-width: 100%;
+    height:auto;
+}
+
+.clear{clear:both;display:block;overflow:hidden;visibility:hidden;width:0;height:0}
+.clearfix:after{clear:both;content:' ';display:block;font-size:0;line-height:0;visibility:hidden;width:0;height:0}
+* html .clearfix, *:first-child+html .clearfix{zoom:1}
+
+/* Viewable Grids
+	To view your grids, add the class .visible to any grid container.
+	This will add a background color so you can see the layout of your grids.
+*/
+*[class*="col_"].visible{
+    background:#eee;
+    border:1px dotted #ccc;
+}
+
+/*---------------------------------
+	Responsive Grid Media Queries
+-----------------------------------*/
+@media all and (min-width: 1024px) and (max-width: 1280px) {
+
+    .grid *[class*="col_"]{}
+    .grid{max-width: 1024px;}
+    .show-desktop	{display:block;}
+    .hide-desktop	{display:none;}
+    .show-tablet	{display:none;}
+    .hide-tablet	{display:block;}
+    .show-phone		{display:none;}
+    .hide-phone		{display:block;}
+
+}
+
+@media all and (min-width: 768px) and (max-width: 1024px) {
+
+    .grid *[class*="col_"]{}
+    .grid{max-width: 768px;}
+    .show-desktop	{display:none;}
+    .hide-desktop	{display:block;}
+    .show-tablet	{display:block;}
+    .hide-tablet	{display:none;}
+    .show-phone		{display:none;}
+    .hide-phone		{display:block;}
+
+}
+
+
+@media all and (min-width: 480px) and (max-width: 768px) {
+
+    .grid *[class*="col_"]{
+        float:none;
+        width:auto;
+        clear:both;
+        display:block;
+    }
+
+    /* columns inside of columns */
+    .grid *[class*="col_"] [class*="col_"]{
+        margin-left:0;
+        margin-right:0;
+        width:100%;
+    }
+
+    .grid{max-width: 480px;}
+    .show-desktop	{display:none;}
+    .hide-desktop	{display:block;}
+    .show-tablet	{display:block;}
+    .hide-tablet	{display:none;}
+    .show-phone		{display:none;}
+    .hide-phone		{display:block;}
+
+}
+
+@media all and (max-width: 480px) {
+
+    .grid *[class*="col_"]{
+        float:none;
+        width:auto;
+        clear:both;
+        display:block;
+    }
+
+    /* columns inside of columns */
+    .grid *[class*="col_"] [class*="col_"]{
+        margin-left:0;
+        margin-right:0;
+        width:100%;
+    }
+
+    .grid{max-width: 100%;/*320*/}
+    .show-desktop	{display:none;}
+    .hide-desktop	{display:block;}
+    .show-tablet	{display:none;}
+    .hide-tablet	{display:block;}
+    .show-phone		{display:block;}
+    .hide-phone		{display:none;}
+
+}
+
+/* Smartphones (landscape) ----------- */
+@media (max-width: 767px) {
+    .container{
+        width: auto;
+    }
+    #signin-form input{
+        display: none;
+    }
+    .container{
+        width: auto;
+    }
+}
+/*OTHER!*/
+.pull-right{
+    float: right;
+}
+.page-header{
+    border-bottom: 1px solid #b8b3b7;
+    margin-bottom: 15px;
+}
+.slide-box{
+    border: 1px solid #b8b3b7;
+    margin-left: 0px;
+    padding: 0 15px;
+    height: 200px;
+}
+

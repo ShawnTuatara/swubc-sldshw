@@ -14,12 +14,12 @@
 <div class="container">
     <div class="grid flex">
         <div th:fragment="header" class="col_12 navbar">
-            <a href="/home.html" th:href="@{/}" id="logo"></a>
-            <div class="pull-right" th:replace="login :: loginForm" id="loginSection">
+            <a href="home.html" th:href="@{/}" id="logo"></a>
+            <div class="pull-right" id="loginSection">
                 <!--logged in-->
 	            <div sec:authorize="isAuthenticated()" class="loggedIn" th:class="''">
-	        		<a style="display: inline-block" href="/slides-list.html" th:href="@{/slides-list}" th:text="${#authentication.name}">Anon</a>
-	        		<button  style="display: inline-block; margin-left: 10px" id="logout" class="blue small" type="button"><a href="/logout.html" th:href="@{/logout}">Logout</a></button>
+	        		<a style="display: inline-block" href="slides-list.html" th:href="@{/slides-list}" th:text="${#authentication.name}">Anon</a>
+	        		<button  style="display: inline-block; margin-left: 10px" id="logout" class="blue small" type="button"><a href="logout.html" th:href="@{/logout}">Logout</a></button>
 	    		</div>
 	    		<div sec:authorize="isAnonymous()" class="anonymous">
 		            <!-- Menu Horizontal -->

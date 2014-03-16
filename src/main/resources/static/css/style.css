@@ -67,10 +67,17 @@ body{
     /*background-color: #4e4d64;*/
     background-color: #e1e2e3;
     color: #353438;
+    z-index: -1;
 }
-#home, #mobile{
+#home, .mobile{
     color: #ffffff;
     background-color: #4f4d65;
+}
+.mobile #logo{
+    margin-top: 24px;
+}
+.mobile .content{
+    position: relative;
 }
 #home .content{
     margin-top: 30px;
@@ -93,6 +100,7 @@ body{
 	BUTTONS
 -----------------------------------*/
 button {
+    color:#ffffff;
     position:relative;
     top:0;
     left:0;
@@ -100,28 +108,29 @@ button {
     margin:0;
     padding:10px 15px;
     line-height:100%;
-    -moz-border-radius:2px;
-    -webkit-border-radius:2px;
-    border-radius:2px;
     cursor: pointer;
     width:auto;
     overflow:visible;
     font-weight:normal;
     font-size:14px; /*Pixels for consistancy*/
-    background: #41ab8d;
-    color:#ffffff;
     text-decoration:none;
     vertical-align: middle;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
     display:inline-block;
     *display:inline;/*IE ONLY*/
     zoom:1;
     border: none;
 }
-button:active{background: #25a180;}
-button:hover{background: #25a180;}
+button.blue, button.orange{
+    -moz-border-radius:2px;
+    -webkit-border-radius:2px;
+    border-radius:2px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+button.blue, button.blue:active{background: #25a180;}
+button.blue:hover{background: #25a180;}
 button.orange, button.orange:active
 {
     background: #f5a01f;
@@ -512,34 +521,40 @@ button.medium{
     left: 0px;
 }
 .heart{
+    cursor: pointer;
     display: inline-block;
     margin-top: 15px;
     margin-left: 4px;
     width: 70px;
-    height: 65px;
+    height: 70px;
     background: url("../img/heart-white.svg");
 }
-.heart:hover{
+.heart:hover, .heart.active{
     background: url("../img/heart-green.svg");
 }
-/*.quetion{*/
-    /*display: inline-block;*/
-    /*width: 70px;*/
-    /*height: 65px;*/
-    /*background: url("../img/question-white.svg");*/
-/*}*/
-/*.question:hover{*/
-    /*background: url("../img/question-green.svg");*/
-/*}*/
-/*.notes{*/
-    /*display: inline-block;*/
-    /*width: 70px;*/
-    /*height: 65px;*/
-    /*background: url("../img/notes-white.svg");*/
-/*}*/
-/*.notes:hover{*/
-    /*background: url("../img/notes-green.svg");*/
-/*}*/
+.question{
+    cursor: pointer;
+    display: inline-block;
+    width: 70px;
+    height: 70px;
+    background: url("../img/question-white.svg");
+}
+.question:hover, .question.active{
+    background: url("../img/question-green.svg");
+}
+.notes, .notes.active{
+    cursor: pointer;
+    display: inline-block;
+    width: 70px;
+    height: 70px;
+    background: url("../img/notes-white.svg");
+}
+.notes:hover{
+    background: url("../img/notes-green.svg");
+}
+.question, .heart, .notes{
+    z-index: 1000;
+}
 .header-background{
     z-index: -1;
     top: 0;
@@ -549,10 +564,60 @@ button.medium{
     position: absolute;
     background-color: #4f4d65;
 }
+
 .actions{
-    background-color: #ffffff;
-    opacity: .3;
+    position: relative;
+    /*width: 100%;*/
+    height: 100px;
+    /*background-color: #ffffff;*/
+    /*opacity: .3;*/
 }
+.footer-mobile{
+    margin-top: 50px;
+}
+
+/*Speech bubble*/
+.speech
+{
+    color: #4f4d65;
+    position: relative;
+    width: 60px;
+    height: 50px;
+    text-align: center;
+    line-height: 100px;
+    background-color: #fff;
+    /*border: 8px solid #666;*/
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+.speech:before
+{
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: 30px;
+    top: 40px;
+    border: 15px solid;
+    border-color: transparent;
+}
+.speech:after
+{
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: 25px;
+    top: 40px;
+    border: 10px solid;
+    border-color: #fff transparent transparent #fff;
+}
+
+.speech-bubble span{
+    display: inline-block;
+}
+
 
 
 

@@ -35,10 +35,6 @@ public class Stats implements Comparable<Stats> {
 	}
 	
 	public void collect(PageAnnotation annotation) {
-		if (!annotation.getPageId().equals(pageId)) {
-			throw new IllegalArgumentException("wrong page id");
-		}
-		
 		if (annotation.getHeart() != null && annotation.getHeart()) {
 			this.heartCount.incrementAndGet();
 		}

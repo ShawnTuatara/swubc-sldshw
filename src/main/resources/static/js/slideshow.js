@@ -22,15 +22,15 @@ $(document).ready(function(){
             
             stompClient.subscribe('/topic/presentation/1/page', function(pagenum){
             	console.log('received: ' + pagenum);
-            	document.getElementById('currentPage').innerHTML = pagenum;
-            })
+            	document.getElementById('results').innerHTML = pagenum;
+            });
             
         });}
     
-    function setPage() {
-    	 stompClient.send("/presentation/1/page", {}, document.getElementById('pagenumbertoset').value);
+    function send() {
+    	 stompClient.send(document.getElementById('path').value, {}, document.getElementById('data').value);
     }
-    $('#setPage').click(setPage);
+    $('#send').click(send);
     
     function sendComment() {
         stompClient.send("/comment", {}, JSON.stringify({ 'body': "This is through sockets" }));

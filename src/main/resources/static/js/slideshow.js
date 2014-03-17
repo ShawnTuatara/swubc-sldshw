@@ -1,4 +1,4 @@
-var lastPage = 12
+var lastPage = 10
 
 function Client(pres_id){ 
     
@@ -200,6 +200,18 @@ function Host(pres_id){
         /*stompClient.send(ep_relay, {}, JSON.stringify(packIndices()))*/
     
         stompClient.subscribe(topic_ep_page.concat("/").concat(page_id), stats_received);
+        
+        console.log("fuck10", page_id, lastPage);
+        if (page_id==lastPage){
+            stompClient.subscribe(topic_ep_summary, function(data) {
+            	data = JSON.parse(data.body);
+            	console.log("fuck3", data);
+            	//document.getElementById("heart").innerHTML = data.userStats.heartCount;
+            	//document.getElementById("q").innerHTML = data.userStats.questionCount;
+            	console.log("fuck4", data);
+            })
+            stompClient.send(ep_summary, {}, 'null');
+        }
     }
     
     Reveal.addEventListener("slidechanged", slidechanged);

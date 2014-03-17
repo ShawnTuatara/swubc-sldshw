@@ -14,7 +14,6 @@ function Client(pres_id){
     /* var ep_page = "".concat(ep, "/page/", pageId) */
     var ep_summary = "".concat(ep, "/summary")
     var topic_ep_page = "".concat('/topic', ep_page)
-    var topic_ep_summary = "".concat('/topic', ep_summary)
 
     var recieve_page_annotations = function(data){
         
@@ -78,7 +77,6 @@ function Client(pres_id){
         stompClient.subscribe(ep_page, recieve_id_page );
         stompClient.subscribe(ep_summary, recieve_id_summary);
         stompClient.subscribe(topic_ep_page, recieve_topic_id_page );
-        stompClient.subscribe(topic_ep_summary, recieve_topic_id_summary);
         
     }
     
@@ -145,19 +143,25 @@ function Client(pres_id){
                 }
         }
         
-        $('.notes').click(toggleInput)
+        $('.notes').click(toggleInput);
             
         $("#noteSubmit").click(function(){
             console.log($("#note").val());
             stompClient.send(ep, {}, JSON.stringify({ pageannotation: {comment: $("#note").val(), "pageId": pageId} }));
+            $("#note").val("");
             toggleInput();
         });
+        
+   	 
+	   	 $('#registerSubmit').click(function() {
+	   		 stompClient.send("/register", {}, JSON.stringify($("#registrationEmail").val()));
+	   		 setTimeout(function () {
+	   			window.location.href = "/confirmation";
+	   		 }, 500);
+	   		 
+	   	 });
             
         });
-    
-    var register = function (data) {
-        stompClient.send("/register", {}, { body: data});
-        };
 }
 
 function Host(pres_id){
@@ -237,4 +241,5 @@ function Host(pres_id){
 
 $(document).ready(function() {
 	 $('#loginSignIn').click(function() {$(this).parent().submit();});
+
  });

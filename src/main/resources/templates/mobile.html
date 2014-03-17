@@ -1,7 +1,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}" media="all" /> <!-- KICKSTART -->
-    <link rel="stylesheet" href="../static/css/style1.css" th:href="@{/css/style.css}" media="all" /> <!-- KICKSTART -->
+    <link rel="stylesheet" href="../static/css/style1.css" th:href="@{/css/style1.css}" media="all" /> <!-- KICKSTART -->
     <title></title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="../static/js/kickstart.js" th:src="@{/js/kickstart.js}"></script> <!-- KICKSTART -->
@@ -22,15 +22,14 @@
                 <div class="heart"></div>
                 <div class="question"></div>
                 <div class="notes"></div>
-                <div id="noteInput" style="display:none; position: relative; top: 0; bottom: 0;"><textarea id="note"></textarea><button class="blue medium" id="noteSubmit">Submit</button></div>
             </div>
         </div>
     </div>
     <div th:include="register :: content" id ="register" class="grid flex hidden"></div>
 </div>
-<div class="overlay overlay-hugeinc">
-    <textarea class="textarea"></textarea>
-    <button type="button" class="pull-right orange large">Submit</button>
+<div id="noteInput" class="overlay overlay-hugeinc hidden">
+    <textarea class="textarea" id="note"></textarea>
+    <button type="button" id="noteSubmit" class="pull-right orange large">Submit</button>
 </div>
 </body>
 </html>
